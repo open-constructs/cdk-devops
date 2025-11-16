@@ -3,3 +3,6 @@ export class Hello {
     return 'hello, world!';
   }
 }
+
+// Versioning module
+export * from './versioning';
