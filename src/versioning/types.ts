@@ -213,6 +213,11 @@ export interface IVersionInfo {
   readonly deploymentTime: string;
 
   /**
+   * Deployment username
+   */
+  readonly deploymentUser: string;
+
+  /**
    * Environment/stage name
    */
   readonly environment: string;

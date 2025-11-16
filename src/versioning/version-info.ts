@@ -26,6 +26,11 @@ export interface VersionInfoProps {
   readonly deploymentTime?: string;
 
   /**
+   * Deployment username
+   */
+  readonly deploymentUser?: string;
+
+  /**
    * Environment/stage name
    */
   readonly environment: string;
@@ -69,6 +74,7 @@ export class VersionInfo implements IVersionInfo {
       environment,
       packageVersion: process.env.PACKAGE_VERSION,
       deploymentTime: process.env.DEPLOYMENT_TIME || new Date().toISOString(),
+      deploymentUser: process.env.GITHUB_ACTOR || process.env.GITLAB_USER_LOGIN || process.env.USER || 'unknown',
       repositoryUrl: process.env.REPOSITORY_URL || process.env.GITHUB_REPOSITORY
         ? `https://github.com/${process.env.GITHUB_REPOSITORY}`
         : undefined,
@@ -93,6 +99,7 @@ export class VersionInfo implements IVersionInfo {
       },
       packageVersion: data.packageVersion,
       deploymentTime: data.deploymentTime,
+      deploymentUser: data.deploymentUser,
       environment: data.environment,
       repositoryUrl: data.repositoryUrl,
       buildNumber: data.buildNumber,
@@ -121,6 +128,7 @@ export class VersionInfo implements IVersionInfo {
   public readonly commitCount: number;
   public readonly packageVersion?: string;
   public readonly deploymentTime: string;
+  public readonly deploymentUser: string;
   public readonly environment: string;
   public readonly repositoryUrl?: string;
   public readonly buildNumber?: string;
@@ -135,6 +143,7 @@ export class VersionInfo implements IVersionInfo {
     this.commitCount = props.gitInfo.commitCount;
     this.packageVersion = props.packageVersion;
     this.deploymentTime = props.deploymentTime || new Date().toISOString();
+    this.deploymentUser = props.deploymentUser || 'unknown';
     this.environment = props.environment;
     this.repositoryUrl = props.repositoryUrl;
     this.buildNumber = props.buildNumber;
@@ -182,6 +191,7 @@ export class VersionInfo implements IVersionInfo {
       commitCount: this.commitCount,
       packageVersion: this.packageVersion,
       deploymentTime: this.deploymentTime,
+      deploymentUser: this.deploymentUser,
       environment: this.environment,
       repositoryUrl: this.repositoryUrl,
       buildNumber: this.buildNumber,
@@ -225,6 +235,7 @@ export class VersionInfoBuilder {
   private gitInfo?: GitInfo;
   private packageVersion?: string;
   private deploymentTime?: string;
+  private deploymentUser?: string;
   private environment?: string;
   private repositoryUrl?: string;
   private buildNumber?: string;
@@ -259,6 +270,14 @@ export class VersionInfoBuilder {
    */
   public withDeploymentTime(deploymentTime?: string): this {
     this.deploymentTime = deploymentTime;
+    return this;
+  }
+
+  /**
+   * Set deployment username
+   */
+  public withDeploymentUser(deploymentUser?: string): this {
+    this.deploymentUser = deploymentUser;
     return this;
   }
 
@@ -313,6 +332,7 @@ export class VersionInfoBuilder {
       gitInfo: this.gitInfo,
       packageVersion: this.packageVersion,
       deploymentTime: this.deploymentTime,
+      deploymentUser: this.deploymentUser,
       environment: this.environment,
       repositoryUrl: this.repositoryUrl,
       buildNumber: this.buildNumber,
