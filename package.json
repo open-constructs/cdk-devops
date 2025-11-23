@@ -30,9 +30,9 @@
     "projen": "npx projen"
   },
   "author": {
-    "name": "Thorsten Hoeger",
-    "email": "thorsten.hoeger@taimos.de",
-    "organization": false
+    "name": "The Open Construct Foundation",
+    "email": "info@taimos.de",
+    "organization": true
   },
   "devDependencies": {
     "@stylistic/eslint-plugin": "^2",
@@ -54,6 +54,7 @@
     "jsii-pacmak": "^1.119.0",
     "jsii-rosetta": "~5.9.0",
     "projen": "^0.98.11",
+    "projen-pipelines": "^0.3.0",
     "ts-jest": "^29.4.5",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3"

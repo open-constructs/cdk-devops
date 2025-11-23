@@ -78,6 +78,10 @@
       "type": "build"
     },
     {
+      "name": "projen-pipelines",
+      "type": "build"
+    },
+    {
       "name": "ts-jest",
       "type": "build"
     },
