@@ -777,6 +777,7 @@ const versionInfoProps: VersionInfoProps = { ... }
 | <code><a href="#cdk-devops.VersionInfoProps.property.version">version</a></code> | <code>string</code> | Computed version string. |
 | <code><a href="#cdk-devops.VersionInfoProps.property.buildNumber">buildNumber</a></code> | <code>string</code> | Build number. |
 | <code><a href="#cdk-devops.VersionInfoProps.property.deploymentTime">deploymentTime</a></code> | <code>string</code> | Deployment timestamp. |
+| <code><a href="#cdk-devops.VersionInfoProps.property.deploymentUser">deploymentUser</a></code> | <code>string</code> | Deployment username. |
 | <code><a href="#cdk-devops.VersionInfoProps.property.packageVersion">packageVersion</a></code> | <code>string</code> | Package version from package.json. |
 | <code><a href="#cdk-devops.VersionInfoProps.property.pipelineVersion">pipelineVersion</a></code> | <code>string</code> | Pipeline version/execution ID. |
 | <code><a href="#cdk-devops.VersionInfoProps.property.repositoryUrl">repositoryUrl</a></code> | <code>string</code> | Repository URL. |
@@ -840,6 +841,18 @@ public readonly deploymentTime: string;
 - *Type:* string
 
 Deployment timestamp.
+
+---
+
+##### `deploymentUser`<sup>Optional</sup> <a name="deploymentUser" id="cdk-devops.VersionInfoProps.property.deploymentUser"></a>
+
+```typescript
+public readonly deploymentUser: string;
+```
+
+- *Type:* string
+
+Deployment username.
 
 ---
 
@@ -1072,6 +1085,7 @@ const versionOutputsProps: VersionOutputsProps = { ... }
 | --- | --- | --- |
 | <code><a href="#cdk-devops.VersionOutputsProps.property.versionInfo">versionInfo</a></code> | <code><a href="#cdk-devops.VersionInfo">VersionInfo</a></code> | Version information to output. |
 | <code><a href="#cdk-devops.VersionOutputsProps.property.cloudFormation">cloudFormation</a></code> | <code><a href="#cdk-devops.CloudFormationOutputConfig">CloudFormationOutputConfig</a></code> | CloudFormation output configuration. |
+| <code><a href="#cdk-devops.VersionOutputsProps.property.metadataKey">metadataKey</a></code> | <code>string</code> | Metadata key. |
 | <code><a href="#cdk-devops.VersionOutputsProps.property.outputPrefix">outputPrefix</a></code> | <code>string</code> | Prefix for output names. |
 | <code><a href="#cdk-devops.VersionOutputsProps.property.parameterStore">parameterStore</a></code> | <code><a href="#cdk-devops.ParameterStoreOutputConfig">ParameterStoreOutputConfig</a></code> | SSM Parameter Store configuration. |
 
@@ -1099,6 +1113,19 @@ public readonly cloudFormation: CloudFormationOutputConfig;
 - *Default:* CloudFormation outputs enabled
 
 CloudFormation output configuration.
+
+---
+
+##### `metadataKey`<sup>Optional</sup> <a name="metadataKey" id="cdk-devops.VersionOutputsProps.property.metadataKey"></a>
+
+```typescript
+public readonly metadataKey: string;
+```
+
+- *Type:* string
+- *Default:* 'Version'
+
+Metadata key.
 
 ---
 
@@ -1612,6 +1639,7 @@ Create VersionInfo from JSON string.
 | <code><a href="#cdk-devops.VersionInfo.property.commitCount">commitCount</a></code> | <code>number</code> | Total commit count. |
 | <code><a href="#cdk-devops.VersionInfo.property.commitHash">commitHash</a></code> | <code>string</code> | Git commit hash. |
 | <code><a href="#cdk-devops.VersionInfo.property.deploymentTime">deploymentTime</a></code> | <code>string</code> | Deployment timestamp. |
+| <code><a href="#cdk-devops.VersionInfo.property.deploymentUser">deploymentUser</a></code> | <code>string</code> | Deployment username. |
 | <code><a href="#cdk-devops.VersionInfo.property.environment">environment</a></code> | <code>string</code> | Environment/stage name. |
 | <code><a href="#cdk-devops.VersionInfo.property.shortCommitHash">shortCommitHash</a></code> | <code>string</code> | Git commit hash (short form, typically 8 characters). |
 | <code><a href="#cdk-devops.VersionInfo.property.version">version</a></code> | <code>string</code> | Computed version string. |
@@ -1668,6 +1696,18 @@ public readonly deploymentTime: string;
 - *Type:* string
 
 Deployment timestamp.
+
+---
+
+##### `deploymentUser`<sup>Required</sup> <a name="deploymentUser" id="cdk-devops.VersionInfo.property.deploymentUser"></a>
+
+```typescript
+public readonly deploymentUser: string;
+```
+
+- *Type:* string
+
+Deployment username.
 
 ---
 
@@ -1792,6 +1832,7 @@ new VersionInfoBuilder()
 | <code><a href="#cdk-devops.VersionInfoBuilder.buildVersionInfo">buildVersionInfo</a></code> | Build the VersionInfo instance. |
 | <code><a href="#cdk-devops.VersionInfoBuilder.withBuildNumber">withBuildNumber</a></code> | Set build number. |
 | <code><a href="#cdk-devops.VersionInfoBuilder.withDeploymentTime">withDeploymentTime</a></code> | Set deployment time. |
+| <code><a href="#cdk-devops.VersionInfoBuilder.withDeploymentUser">withDeploymentUser</a></code> | Set deployment username. |
 | <code><a href="#cdk-devops.VersionInfoBuilder.withEnvironment">withEnvironment</a></code> | Set environment. |
 | <code><a href="#cdk-devops.VersionInfoBuilder.withGitInfo">withGitInfo</a></code> | Set git information. |
 | <code><a href="#cdk-devops.VersionInfoBuilder.withPackageVersion">withPackageVersion</a></code> | Set package version. |
@@ -1832,6 +1873,20 @@ public withDeploymentTime(deploymentTime?: string): VersionInfoBuilder
 Set deployment time.
 
 ###### `deploymentTime`<sup>Optional</sup> <a name="deploymentTime" id="cdk-devops.VersionInfoBuilder.withDeploymentTime.parameter.deploymentTime"></a>
+
+- *Type:* string
+
+---
+
+##### `withDeploymentUser` <a name="withDeploymentUser" id="cdk-devops.VersionInfoBuilder.withDeploymentUser"></a>
+
+```typescript
+public withDeploymentUser(deploymentUser?: string): VersionInfoBuilder
+```
+
+Set deployment username.
+
+###### `deploymentUser`<sup>Optional</sup> <a name="deploymentUser" id="cdk-devops.VersionInfoBuilder.withDeploymentUser.parameter.deploymentUser"></a>
 
 - *Type:* string
 
@@ -2148,6 +2203,7 @@ Version information interface.
 | <code><a href="#cdk-devops.IVersionInfo.property.commitCount">commitCount</a></code> | <code>number</code> | Total commit count. |
 | <code><a href="#cdk-devops.IVersionInfo.property.commitHash">commitHash</a></code> | <code>string</code> | Git commit hash. |
 | <code><a href="#cdk-devops.IVersionInfo.property.deploymentTime">deploymentTime</a></code> | <code>string</code> | Deployment timestamp. |
+| <code><a href="#cdk-devops.IVersionInfo.property.deploymentUser">deploymentUser</a></code> | <code>string</code> | Deployment username. |
 | <code><a href="#cdk-devops.IVersionInfo.property.environment">environment</a></code> | <code>string</code> | Environment/stage name. |
 | <code><a href="#cdk-devops.IVersionInfo.property.shortCommitHash">shortCommitHash</a></code> | <code>string</code> | Git commit hash (short form, typically 8 characters). |
 | <code><a href="#cdk-devops.IVersionInfo.property.version">version</a></code> | <code>string</code> | Computed version string. |
@@ -2204,6 +2260,18 @@ public readonly deploymentTime: string;
 - *Type:* string
 
 Deployment timestamp.
+
+---
+
+##### `deploymentUser`<sup>Required</sup> <a name="deploymentUser" id="cdk-devops.IVersionInfo.property.deploymentUser"></a>
+
+```typescript
+public readonly deploymentUser: string;
+```
+
+- *Type:* string
+
+Deployment username.
 
 ---
 
