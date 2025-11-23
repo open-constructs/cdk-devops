@@ -17,4 +17,7 @@ const project = new awscdk.AwsCdkConstructLibrary({
   // devDeps: [],             /* Build dependencies for this module. */
   // packageName: undefined,  /* The "name" in package.json. */
 });
+
+project.jest?.addSetupFileAfterEnv('<rootDir>/test/jest.setup.ts');
+
 project.synth();

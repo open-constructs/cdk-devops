@@ -57,16 +57,6 @@ describe('GitInfoHelper', () => {
   });
 
   describe('fromEnvironment', () => {
-    const originalEnv = process.env;
-
-    beforeEach(() => {
-      process.env = { ...originalEnv };
-    });
-
-    afterEach(() => {
-      process.env = originalEnv;
-    });
-
     it('should extract from GitHub Actions environment', () => {
       process.env.GITHUB_SHA = 'abcdef1234567890';
       process.env.GITHUB_REF = 'refs/heads/feature-branch';

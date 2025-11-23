@@ -114,7 +114,10 @@
           "tsconfig": "tsconfig.dev.json"
         }
       ]
-    }
+    },
+    "setupFilesAfterEnv": [
+      "<rootDir>/test/jest.setup.ts"
+    ]
   },
   "types": "lib/index.d.ts",
   "stability": "stable",
