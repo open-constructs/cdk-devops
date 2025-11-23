@@ -42,6 +42,11 @@ const project = new awscdk.AwsCdkConstructLibrary({
 
 project.jest?.addSetupFileAfterEnv('<rootDir>/test/jest.setup.ts');
 
+// Add CLI bin entry for compute-version
+project.addBins({
+  'compute-version': 'lib/versioning/compute-version.js',
+});
+
 new GitHubAssignApprover(project, {
   approverMapping: [
     { author: 'hoegertn', approvers: ['Lock128'] },

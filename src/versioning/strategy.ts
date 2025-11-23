@@ -84,8 +84,8 @@ export class VersioningStrategy implements IVersioningStrategy {
    * Strategy using commit hash
    * Format: {commit-hash:8}
    */
-  public static commitHash(length: number = 8): VersioningStrategy {
-    return new VersioningStrategy(`{commit-hash:${length}}`, {});
+  public static commitHash(): VersioningStrategy {
+    return new VersioningStrategy('{commit-hash:8}', {});
   }
 
   /**

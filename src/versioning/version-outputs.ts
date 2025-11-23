@@ -2,8 +2,122 @@ import * as cdk from 'aws-cdk-lib';
 import { Stack } from 'aws-cdk-lib';
 import * as ssm from 'aws-cdk-lib/aws-ssm';
 import { Construct } from 'constructs';
-import { CloudFormationOutputConfig, ParameterStoreOutputConfig } from './types';
+import { CloudFormationOutputConfig, ParameterStoreOutputConfig, VersioningOutputsConfig } from './types';
 import { VersionInfo } from './version-info';
+
+/**
+ * Options for standard output configuration
+ */
+export interface StandardOutputOptions {
+  /**
+   * Parameter name template
+   * @default '/{stackName}/version'
+   */
+  readonly parameterName?: string;
+
+  /**
+   * Output format
+   * @default 'plain'
+   */
+  readonly format?: 'plain' | 'structured';
+}
+
+/**
+ * Options for CloudFormation-only output configuration
+ */
+export interface CloudFormationOnlyOptions {
+  /**
+   * Output format
+   * @default 'plain'
+   */
+  readonly format?: 'plain' | 'structured';
+
+  /**
+   * Stack output name
+   */
+  readonly stackOutputName?: string;
+
+  /**
+   * Export name for cross-stack references
+   */
+  readonly exportName?: string;
+}
+
+/**
+ * Options for hierarchical parameter configuration
+ */
+export interface HierarchicalParametersOptions {
+  /**
+   * Whether to include CloudFormation outputs
+   * @default false
+   */
+  readonly includeCloudFormation?: boolean;
+
+  /**
+   * Output format
+   * @default 'plain'
+   */
+  readonly format?: 'plain' | 'structured';
+}
+
+/**
+ * Factory class for creating versioning output configurations
+ */
+export class VersioningOutputsFactory {
+  /**
+   * Standard output configuration with CloudFormation and Parameter Store
+   */
+  public static standard(options?: StandardOutputOptions): VersioningOutputsConfig {
+    return {
+      cloudFormation: { enabled: true },
+      parameterStore: {
+        enabled: true,
+        basePath: options?.parameterName || '/{stackName}/version',
+      },
+    };
+  }
+
+  /**
+   * CloudFormation-only output configuration
+   */
+  public static cloudFormationOnly(options?: CloudFormationOnlyOptions): VersioningOutputsConfig {
+    return {
+      cloudFormation: {
+        enabled: true,
+        export: !!options?.exportName,
+        exportNameTemplate: options?.exportName,
+      },
+      parameterStore: { enabled: false },
+    };
+  }
+
+  /**
+   * Hierarchical Parameter Store configuration
+   */
+  public static hierarchicalParameters(
+    basePath: string,
+    options?: HierarchicalParametersOptions,
+  ): VersioningOutputsConfig {
+    return {
+      cloudFormation: { enabled: options?.includeCloudFormation ?? false },
+      parameterStore: {
+        enabled: true,
+        basePath,
+        splitParameters: true,
+      },
+    };
+  }
+
+  /**
+   * Minimal output configuration with only CloudFormation outputs
+   */
+  public static minimal(): VersioningOutputsConfig {
+    return {
+      cloudFormation: { enabled: true },
+      parameterStore: { enabled: false },
+    };
+  }
+}
 
 /**
  * Props for VersionOutputs construct

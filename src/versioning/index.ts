@@ -15,3 +15,6 @@ export * from './computation';
 
 // CDK Constructs
 export * from './version-outputs';
+
+// CLI utilities
+export { computeVersion } from './compute-version';
