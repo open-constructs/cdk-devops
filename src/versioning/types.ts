@@ -257,4 +257,19 @@ export interface VersioningConfig {
    * Output configuration
    */
   readonly outputs: VersioningOutputsConfig;
+
+  /**
+   * Stage-specific configuration overrides
+   */
+  readonly stageOverrides?: { [stage: string]: VersioningConfig };
 }
+
+/**
+ * Alias for VersioningOutputsConfig for compatibility with projen-pipelines
+ */
+export type VersioningOutputConfig = VersioningOutputsConfig;
+
+/**
+ * Alias for ParameterStoreOutputConfig for compatibility with projen-pipelines
+ */
+export type ParameterStoreConfig = ParameterStoreOutputConfig;

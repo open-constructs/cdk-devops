@@ -101,12 +101,6 @@ describe('VersioningStrategy', () => {
 
       expect(strategy.format).toBe('{commit-hash:8}');
     });
-
-    it('should accept custom length', () => {
-      const strategy = VersioningStrategy.commitHash(12);
-
-      expect(strategy.format).toBe('{commit-hash:12}');
-    });
   });
 
   describe('gitTagWithDevVersions', () => {

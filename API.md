@@ -191,6 +191,65 @@ Environment variable to read build number from.
 
 ---
 
+### CloudFormationOnlyOptions <a name="CloudFormationOnlyOptions" id="cdk-devops.CloudFormationOnlyOptions"></a>
+
+Options for CloudFormation-only output configuration.
+
+#### Initializer <a name="Initializer" id="cdk-devops.CloudFormationOnlyOptions.Initializer"></a>
+
+```typescript
+import { CloudFormationOnlyOptions } from 'cdk-devops'
+
+const cloudFormationOnlyOptions: CloudFormationOnlyOptions = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#cdk-devops.CloudFormationOnlyOptions.property.exportName">exportName</a></code> | <code>string</code> | Export name for cross-stack references. |
+| <code><a href="#cdk-devops.CloudFormationOnlyOptions.property.format">format</a></code> | <code>string</code> | Output format. |
+| <code><a href="#cdk-devops.CloudFormationOnlyOptions.property.stackOutputName">stackOutputName</a></code> | <code>string</code> | Stack output name. |
+
+---
+
+##### `exportName`<sup>Optional</sup> <a name="exportName" id="cdk-devops.CloudFormationOnlyOptions.property.exportName"></a>
+
+```typescript
+public readonly exportName: string;
+```
+
+- *Type:* string
+
+Export name for cross-stack references.
+
+---
+
+##### `format`<sup>Optional</sup> <a name="format" id="cdk-devops.CloudFormationOnlyOptions.property.format"></a>
+
+```typescript
+public readonly format: string;
+```
+
+- *Type:* string
+- *Default:* 'plain'
+
+Output format.
+
+---
+
+##### `stackOutputName`<sup>Optional</sup> <a name="stackOutputName" id="cdk-devops.CloudFormationOnlyOptions.property.stackOutputName"></a>
+
+```typescript
+public readonly stackOutputName: string;
+```
+
+- *Type:* string
+
+Stack output name.
+
+---
+
 ### CloudFormationOutputConfig <a name="CloudFormationOutputConfig" id="cdk-devops.CloudFormationOutputConfig"></a>
 
 CloudFormation output configuration.
@@ -650,6 +709,53 @@ Prefix to strip from git tags (e.g., 'v' for tags like 'v1.2.3').
 
 ---
 
+### HierarchicalParametersOptions <a name="HierarchicalParametersOptions" id="cdk-devops.HierarchicalParametersOptions"></a>
+
+Options for hierarchical parameter configuration.
+
+#### Initializer <a name="Initializer" id="cdk-devops.HierarchicalParametersOptions.Initializer"></a>
+
+```typescript
+import { HierarchicalParametersOptions } from 'cdk-devops'
+
+const hierarchicalParametersOptions: HierarchicalParametersOptions = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#cdk-devops.HierarchicalParametersOptions.property.format">format</a></code> | <code>string</code> | Output format. |
+| <code><a href="#cdk-devops.HierarchicalParametersOptions.property.includeCloudFormation">includeCloudFormation</a></code> | <code>boolean</code> | Whether to include CloudFormation outputs. |
+
+---
+
+##### `format`<sup>Optional</sup> <a name="format" id="cdk-devops.HierarchicalParametersOptions.property.format"></a>
+
+```typescript
+public readonly format: string;
+```
+
+- *Type:* string
+- *Default:* 'plain'
+
+Output format.
+
+---
+
+##### `includeCloudFormation`<sup>Optional</sup> <a name="includeCloudFormation" id="cdk-devops.HierarchicalParametersOptions.property.includeCloudFormation"></a>
+
+```typescript
+public readonly includeCloudFormation: boolean;
+```
+
+- *Type:* boolean
+- *Default:* false
+
+Whether to include CloudFormation outputs.
+
+---
+
 ### PackageJsonConfig <a name="PackageJsonConfig" id="cdk-devops.PackageJsonConfig"></a>
 
 Package.json version configuration.
@@ -753,6 +859,53 @@ public readonly splitParameters: boolean;
 - *Default:* false
 
 Whether to split version info into separate parameters.
+
+---
+
+### StandardOutputOptions <a name="StandardOutputOptions" id="cdk-devops.StandardOutputOptions"></a>
+
+Options for standard output configuration.
+
+#### Initializer <a name="Initializer" id="cdk-devops.StandardOutputOptions.Initializer"></a>
+
+```typescript
+import { StandardOutputOptions } from 'cdk-devops'
+
+const standardOutputOptions: StandardOutputOptions = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#cdk-devops.StandardOutputOptions.property.format">format</a></code> | <code>string</code> | Output format. |
+| <code><a href="#cdk-devops.StandardOutputOptions.property.parameterName">parameterName</a></code> | <code>string</code> | Parameter name template. |
+
+---
+
+##### `format`<sup>Optional</sup> <a name="format" id="cdk-devops.StandardOutputOptions.property.format"></a>
+
+```typescript
+public readonly format: string;
+```
+
+- *Type:* string
+- *Default:* 'plain'
+
+Output format.
+
+---
+
+##### `parameterName`<sup>Optional</sup> <a name="parameterName" id="cdk-devops.StandardOutputOptions.property.parameterName"></a>
+
+```typescript
+public readonly parameterName: string;
+```
+
+- *Type:* string
+- *Default:* '/{stackName}/version'
+
+Parameter name template.
 
 ---
 
@@ -911,6 +1064,7 @@ const versioningConfig: VersioningConfig = { ... }
 | <code><a href="#cdk-devops.VersioningConfig.property.outputs">outputs</a></code> | <code><a href="#cdk-devops.VersioningOutputsConfig">VersioningOutputsConfig</a></code> | Output configuration. |
 | <code><a href="#cdk-devops.VersioningConfig.property.strategy">strategy</a></code> | <code><a href="#cdk-devops.IVersioningStrategy">IVersioningStrategy</a></code> | Versioning strategy. |
 | <code><a href="#cdk-devops.VersioningConfig.property.enabled">enabled</a></code> | <code>boolean</code> | Whether versioning is enabled. |
+| <code><a href="#cdk-devops.VersioningConfig.property.stageOverrides">stageOverrides</a></code> | <code>{[ key: string ]: <a href="#cdk-devops.VersioningConfig">VersioningConfig</a>}</code> | Stage-specific configuration overrides. |
 
 ---
 
@@ -948,6 +1102,18 @@ public readonly enabled: boolean;
 - *Default:* true
 
 Whether versioning is enabled.
+
+---
+
+##### `stageOverrides`<sup>Optional</sup> <a name="stageOverrides" id="cdk-devops.VersioningConfig.property.stageOverrides"></a>
+
+```typescript
+public readonly stageOverrides: {[ key: string ]: VersioningConfig};
+```
+
+- *Type:* {[ key: string ]: <a href="#cdk-devops.VersioningConfig">VersioningConfig</a>}
+
+Stage-specific configuration overrides.
 
 ---
 
@@ -1947,6 +2113,101 @@ Set version string.
 
 
 
+### VersioningOutputsFactory <a name="VersioningOutputsFactory" id="cdk-devops.VersioningOutputsFactory"></a>
+
+Factory class for creating versioning output configurations.
+
+#### Initializers <a name="Initializers" id="cdk-devops.VersioningOutputsFactory.Initializer"></a>
+
+```typescript
+import { VersioningOutputsFactory } from 'cdk-devops'
+
+new VersioningOutputsFactory()
+```
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+
+---
+
+
+#### Static Functions <a name="Static Functions" id="Static Functions"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#cdk-devops.VersioningOutputsFactory.cloudFormationOnly">cloudFormationOnly</a></code> | CloudFormation-only output configuration. |
+| <code><a href="#cdk-devops.VersioningOutputsFactory.hierarchicalParameters">hierarchicalParameters</a></code> | Hierarchical Parameter Store configuration. |
+| <code><a href="#cdk-devops.VersioningOutputsFactory.minimal">minimal</a></code> | Minimal output configuration with only CloudFormation outputs. |
+| <code><a href="#cdk-devops.VersioningOutputsFactory.standard">standard</a></code> | Standard output configuration with CloudFormation and Parameter Store. |
+
+---
+
+##### `cloudFormationOnly` <a name="cloudFormationOnly" id="cdk-devops.VersioningOutputsFactory.cloudFormationOnly"></a>
+
+```typescript
+import { VersioningOutputsFactory } from 'cdk-devops'
+
+VersioningOutputsFactory.cloudFormationOnly(options?: CloudFormationOnlyOptions)
+```
+
+CloudFormation-only output configuration.
+
+###### `options`<sup>Optional</sup> <a name="options" id="cdk-devops.VersioningOutputsFactory.cloudFormationOnly.parameter.options"></a>
+
+- *Type:* <a href="#cdk-devops.CloudFormationOnlyOptions">CloudFormationOnlyOptions</a>
+
+---
+
+##### `hierarchicalParameters` <a name="hierarchicalParameters" id="cdk-devops.VersioningOutputsFactory.hierarchicalParameters"></a>
+
+```typescript
+import { VersioningOutputsFactory } from 'cdk-devops'
+
+VersioningOutputsFactory.hierarchicalParameters(basePath: string, options?: HierarchicalParametersOptions)
+```
+
+Hierarchical Parameter Store configuration.
+
+###### `basePath`<sup>Required</sup> <a name="basePath" id="cdk-devops.VersioningOutputsFactory.hierarchicalParameters.parameter.basePath"></a>
+
+- *Type:* string
+
+---
+
+###### `options`<sup>Optional</sup> <a name="options" id="cdk-devops.VersioningOutputsFactory.hierarchicalParameters.parameter.options"></a>
+
+- *Type:* <a href="#cdk-devops.HierarchicalParametersOptions">HierarchicalParametersOptions</a>
+
+---
+
+##### `minimal` <a name="minimal" id="cdk-devops.VersioningOutputsFactory.minimal"></a>
+
+```typescript
+import { VersioningOutputsFactory } from 'cdk-devops'
+
+VersioningOutputsFactory.minimal()
+```
+
+Minimal output configuration with only CloudFormation outputs.
+
+##### `standard` <a name="standard" id="cdk-devops.VersioningOutputsFactory.standard"></a>
+
+```typescript
+import { VersioningOutputsFactory } from 'cdk-devops'
+
+VersioningOutputsFactory.standard(options?: StandardOutputOptions)
+```
+
+Standard output configuration with CloudFormation and Parameter Store.
+
+###### `options`<sup>Optional</sup> <a name="options" id="cdk-devops.VersioningOutputsFactory.standard.parameter.options"></a>
+
+- *Type:* <a href="#cdk-devops.StandardOutputOptions">StandardOutputOptions</a>
+
+---
+
+
+
 ### VersioningStrategy <a name="VersioningStrategy" id="cdk-devops.VersioningStrategy"></a>
 
 - *Implements:* <a href="#cdk-devops.IVersioningStrategy">IVersioningStrategy</a>
@@ -2007,16 +2268,10 @@ Strategy using commit count Format: 0.0.{commit-count}.
 ```typescript
 import { VersioningStrategy } from 'cdk-devops'
 
-VersioningStrategy.commitHash(length?: number)
+VersioningStrategy.commitHash()
 ```
 
 Strategy using commit hash Format: {commit-hash:8}.
-
-###### `length`<sup>Optional</sup> <a name="length" id="cdk-devops.VersioningStrategy.commitHash.parameter.length"></a>
-
-- *Type:* number
-
----
 
 ##### `create` <a name="create" id="cdk-devops.VersioningStrategy.create"></a>
 
