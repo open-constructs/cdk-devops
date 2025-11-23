@@ -140,7 +140,7 @@ describe('VersionComputer', () => {
     });
 
     it('should use custom hash length', () => {
-      const strategy = VersioningStrategy.commitHash(12);
+      const strategy = VersioningStrategy.create('{commit-hash:12}');
       const computer = new VersionComputer(strategy);
 
       const version = computer.computeVersionString(mockContext);

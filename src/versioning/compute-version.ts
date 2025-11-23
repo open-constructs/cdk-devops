@@ -1,9 +1,9 @@
 #!/usr/bin/env node
-import * as fs from 'fs';
 import * as cp from 'child_process';
+import * as fs from 'fs';
 import { VersionComputer } from './computation';
-import { VersioningStrategy } from './strategy';
 import { GitInfo } from './git-info';
+import { VersioningStrategy } from './strategy';
 
 /**
  * Compute version information and write to file
