@@ -32,8 +32,8 @@ const project = new awscdk.AwsCdkConstructLibrary({
   releasableCommits: ReleasableCommits.ofType(['feat', 'fix', 'revert', 'Revert', 'docs']),
   releaseTrigger: ReleaseTrigger.manual(),
   devDeps: [
-    'projen-pipelines'
-  ]
+    'projen-pipelines',
+  ],
   // deps: [],                /* Runtime dependencies of this module. */
   // description: undefined,  /* The description is just a string that helps people understand the purpose of the package. */
   // devDeps: [],             /* Build dependencies for this module. */
