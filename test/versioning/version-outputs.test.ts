@@ -373,4 +373,174 @@ describe('VersionOutputs', () => {
       expect(outputs.VersionPackageVersion).toBeUndefined();
     });
   });
+
+  describe('stack metadata', () => {
+    it('should add version info as stack metadata with default key', () => {
+      new VersionOutputs(stack, 'VersionOutputs', {
+        versionInfo,
+      });
+
+      const template = Template.fromStack(stack);
+      const metadata = template.toJSON().Metadata;
+
+      expect(metadata).toBeDefined();
+      expect(metadata.Version).toBeDefined();
+      expect(metadata.Version).toMatchObject({
+        version: '1.2.3',
+        commitHash: 'abcdef1234567890',
+        branch: 'main',
+        tag: 'v1.2.3',
+        commitCount: 42,
+        environment: 'production',
+        packageVersion: '1.2.3',
+        deploymentTime: '2024-01-15T10:00:00Z',
+      });
+    });
+
+    it('should use custom metadataKey when provided', () => {
+      new VersionOutputs(stack, 'VersionOutputs', {
+        versionInfo,
+        metadataKey: 'CustomVersion',
+      });
+
+      const template = Template.fromStack(stack);
+      const metadata = template.toJSON().Metadata;
+
+      expect(metadata).toBeDefined();
+      expect(metadata.CustomVersion).toBeDefined();
+      expect(metadata.CustomVersion.version).toBe('1.2.3');
+      expect(metadata.Version).toBeUndefined();
+    });
+
+    it('should fallback to outputPrefix when metadataKey is not provided', () => {
+      new VersionOutputs(stack, 'VersionOutputs', {
+        versionInfo,
+        outputPrefix: 'App',
+      });
+
+      const template = Template.fromStack(stack);
+      const metadata = template.toJSON().Metadata;
+
+      expect(metadata).toBeDefined();
+      expect(metadata.App).toBeDefined();
+      expect(metadata.App.version).toBe('1.2.3');
+    });
+
+    it('should prefer metadataKey over outputPrefix', () => {
+      new VersionOutputs(stack, 'VersionOutputs', {
+        versionInfo,
+        metadataKey: 'SpecificKey',
+        outputPrefix: 'App',
+      });
+
+      const template = Template.fromStack(stack);
+      const metadata = template.toJSON().Metadata;
+
+      expect(metadata).toBeDefined();
+      expect(metadata.SpecificKey).toBeDefined();
+      expect(metadata.App).toBeUndefined();
+      expect(metadata.Version).toBeUndefined();
+    });
+
+    it('should include all version info fields in metadata', () => {
+      const fullVersionInfo = VersionInfo.create({
+        version: '2.0.0',
+        gitInfo: GitInfoHelper.create({
+          commitHash: 'def4567890123456',
+          branch: 'release/2.0',
+          tag: 'v2.0.0',
+          commitCount: 100,
+        }),
+        environment: 'staging',
+        packageVersion: '2.0.0',
+        deploymentTime: '2024-02-01T15:30:00Z',
+        repositoryUrl: 'https://github.com/example/repo',
+        buildNumber: '123',
+        pipelineVersion: 'pipeline-v1',
+      });
+
+      new VersionOutputs(stack, 'VersionOutputs', {
+        versionInfo: fullVersionInfo,
+      });
+
+      const template = Template.fromStack(stack);
+      const metadata = template.toJSON().Metadata;
+
+      expect(metadata.Version).toMatchObject({
+        version: '2.0.0',
+        commitHash: 'def4567890123456',
+        shortCommitHash: 'def45678',
+        branch: 'release/2.0',
+        tag: 'v2.0.0',
+        commitCount: 100,
+        environment: 'staging',
+        packageVersion: '2.0.0',
+        deploymentTime: '2024-02-01T15:30:00Z',
+        repositoryUrl: 'https://github.com/example/repo',
+        buildNumber: '123',
+        pipelineVersion: 'pipeline-v1',
+      });
+    });
+
+    it('should handle version info without optional fields in metadata', () => {
+      const minimalVersionInfo = VersionInfo.create({
+        version: '1.0.0',
+        gitInfo: GitInfoHelper.create({
+          commitHash: 'abc123',
+          branch: 'main',
+          commitCount: 10,
+        }),
+        environment: 'dev',
+      });
+
+      new VersionOutputs(stack, 'VersionOutputs', {
+        versionInfo: minimalVersionInfo,
+      });
+
+      const template = Template.fromStack(stack);
+      const metadata = template.toJSON().Metadata;
+
+      expect(metadata.Version).toBeDefined();
+      expect(metadata.Version.version).toBe('1.0.0');
+      expect(metadata.Version.tag).toBeUndefined();
+      expect(metadata.Version.packageVersion).toBeUndefined();
+      expect(metadata.Version.repositoryUrl).toBeUndefined();
+    });
+
+    it('should add metadata even when CloudFormation outputs are disabled', () => {
+      new VersionOutputs(stack, 'VersionOutputs', {
+        versionInfo,
+        cloudFormation: { enabled: false },
+      });
+
+      const template = Template.fromStack(stack);
+      const metadata = template.toJSON().Metadata;
+      const outputs = template.toJSON().Outputs || {};
+
+      // No CloudFormation outputs
+      expect(Object.keys(outputs).length).toBe(0);
+
+      // But metadata should still exist
+      expect(metadata.Version).toBeDefined();
+      expect(metadata.Version.version).toBe('1.2.3');
+    });
+
+    it('should add metadata even when only SSM parameters are enabled', () => {
+      new VersionOutputs(stack, 'VersionOutputs', {
+        versionInfo,
+        cloudFormation: { enabled: false },
+        parameterStore: {
+          enabled: true,
+          basePath: '/app/version',
+        },
+      });
+
+      const template = Template.fromStack(stack);
+      const metadata = template.toJSON().Metadata;
+
+      // Metadata should exist regardless of output configuration
+      expect(metadata.Version).toBeDefined();
+      expect(metadata.Version.version).toBe('1.2.3');
+    });
+  });
 });

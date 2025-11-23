@@ -1,4 +1,5 @@
 import * as cdk from 'aws-cdk-lib';
+import { Stack } from 'aws-cdk-lib';
 import * as ssm from 'aws-cdk-lib/aws-ssm';
 import { Construct } from 'constructs';
 import { CloudFormationOutputConfig, ParameterStoreOutputConfig } from './types';
@@ -30,6 +31,12 @@ export interface VersionOutputsProps {
    * @default 'Version'
    */
   readonly outputPrefix?: string;
+
+  /**
+   * Metadata key
+   * @default 'Version'
+   */
+  readonly metadataKey?: string;
 }
 
 /**
@@ -65,6 +72,17 @@ export class VersionOutputs extends Construct {
     if (props.parameterStore?.enabled === true) {
       this.parameters = this.createParameterStoreOutputs(props);
     }
+
+    this.createStackMetadataOutputs(props);
+  }
+
+  /**
+   * Create stack metadata outputs
+   */
+  private createStackMetadataOutputs(props: VersionOutputsProps): void {
+    const metadataKey = props.metadataKey || props.outputPrefix || 'Version';
+
+    Stack.of(this).addMetadata(metadataKey, this.versionInfo.toObject());
   }
 
   /**
