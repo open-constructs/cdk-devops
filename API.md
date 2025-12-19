@@ -2,6 +2,233 @@
 
 ## Constructs <a name="Constructs" id="Constructs"></a>
 
+### StackMetadata <a name="StackMetadata" id="cdk-devops.StackMetadata"></a>
+
+Construct for adding repository and pipeline metadata to a CloudFormation stack.
+
+This construct adds metadata to the stack containing information about the
+repository (provider, owner, repository name, branch, commit) and the
+CI/CD pipeline (job ID, job URL, triggered by, workflow name).
+
+*Example*
+
+```typescript
+// Automatically extract from environment variables
+new StackMetadata(this, 'Metadata');
+
+// Use custom environment variable names
+new StackMetadata(this, 'Metadata', {
+  customEnvVars: {
+    repoOwner: 'MY_REPO_OWNER',
+    repoName: 'MY_REPO_NAME',
+    branch: 'MY_BRANCH',
+    commitHash: 'MY_COMMIT_HASH',
+  },
+});
+
+// Manually provide information
+new StackMetadata(this, 'Metadata', {
+  repoInfo: {
+    provider: CiProvider.GITHUB,
+    owner: 'my-org',
+    repository: 'my-repo',
+    branch: 'main',
+    commitHash: 'abc123',
+  },
+  pipelineInfo: {
+    provider: CiProvider.GITHUB,
+    jobId: '12345',
+    jobUrl: 'https://github.com/my-org/my-repo/actions/runs/12345',
+    triggeredBy: 'user@example.com',
+  },
+});
+```
+
+
+#### Initializers <a name="Initializers" id="cdk-devops.StackMetadata.Initializer"></a>
+
+```typescript
+import { StackMetadata } from 'cdk-devops'
+
+new StackMetadata(scope: Construct, id: string, props?: StackMetadataProps)
+```
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#cdk-devops.StackMetadata.Initializer.parameter.scope">scope</a></code> | <code>constructs.Construct</code> | *No description.* |
+| <code><a href="#cdk-devops.StackMetadata.Initializer.parameter.id">id</a></code> | <code>string</code> | *No description.* |
+| <code><a href="#cdk-devops.StackMetadata.Initializer.parameter.props">props</a></code> | <code><a href="#cdk-devops.StackMetadataProps">StackMetadataProps</a></code> | *No description.* |
+
+---
+
+##### `scope`<sup>Required</sup> <a name="scope" id="cdk-devops.StackMetadata.Initializer.parameter.scope"></a>
+
+- *Type:* constructs.Construct
+
+---
+
+##### `id`<sup>Required</sup> <a name="id" id="cdk-devops.StackMetadata.Initializer.parameter.id"></a>
+
+- *Type:* string
+
+---
+
+##### `props`<sup>Optional</sup> <a name="props" id="cdk-devops.StackMetadata.Initializer.parameter.props"></a>
+
+- *Type:* <a href="#cdk-devops.StackMetadataProps">StackMetadataProps</a>
+
+---
+
+#### Methods <a name="Methods" id="Methods"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#cdk-devops.StackMetadata.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#cdk-devops.StackMetadata.pipelineMetadata">pipelineMetadata</a></code> | Get the pipeline information as a plain object. |
+| <code><a href="#cdk-devops.StackMetadata.repoMetadata">repoMetadata</a></code> | Get the repository information as a plain object. |
+
+---
+
+##### `toString` <a name="toString" id="cdk-devops.StackMetadata.toString"></a>
+
+```typescript
+public toString(): string
+```
+
+Returns a string representation of this construct.
+
+##### `pipelineMetadata` <a name="pipelineMetadata" id="cdk-devops.StackMetadata.pipelineMetadata"></a>
+
+```typescript
+public pipelineMetadata(): PipelineInfo
+```
+
+Get the pipeline information as a plain object.
+
+##### `repoMetadata` <a name="repoMetadata" id="cdk-devops.StackMetadata.repoMetadata"></a>
+
+```typescript
+public repoMetadata(): RepoInfo
+```
+
+Get the repository information as a plain object.
+
+#### Static Functions <a name="Static Functions" id="Static Functions"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#cdk-devops.StackMetadata.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+| <code><a href="#cdk-devops.StackMetadata.fromEnvironment">fromEnvironment</a></code> | Create a new StackMetadata construct that extracts information from environment variables. |
+
+---
+
+##### `isConstruct` <a name="isConstruct" id="cdk-devops.StackMetadata.isConstruct"></a>
+
+```typescript
+import { StackMetadata } from 'cdk-devops'
+
+StackMetadata.isConstruct(x: any)
+```
+
+Checks if `x` is a construct.
+
+Use this method instead of `instanceof` to properly detect `Construct`
+instances, even when the construct library is symlinked.
+
+Explanation: in JavaScript, multiple copies of the `constructs` library on
+disk are seen as independent, completely different libraries. As a
+consequence, the class `Construct` in each copy of the `constructs` library
+is seen as a different class, and an instance of one class will not test as
+`instanceof` the other class. `npm install` will not create installations
+like this, but users may manually symlink construct libraries together or
+use a monorepo tool: in those cases, multiple copies of the `constructs`
+library can be accidentally installed, and `instanceof` will behave
+unpredictably. It is safest to avoid using `instanceof`, and using
+this type-testing method instead.
+
+###### `x`<sup>Required</sup> <a name="x" id="cdk-devops.StackMetadata.isConstruct.parameter.x"></a>
+
+- *Type:* any
+
+Any object.
+
+---
+
+##### `fromEnvironment` <a name="fromEnvironment" id="cdk-devops.StackMetadata.fromEnvironment"></a>
+
+```typescript
+import { StackMetadata } from 'cdk-devops'
+
+StackMetadata.fromEnvironment(scope: Construct, id: string, customEnvVars?: CustomEnvVarConfig)
+```
+
+Create a new StackMetadata construct that extracts information from environment variables.
+
+###### `scope`<sup>Required</sup> <a name="scope" id="cdk-devops.StackMetadata.fromEnvironment.parameter.scope"></a>
+
+- *Type:* constructs.Construct
+
+---
+
+###### `id`<sup>Required</sup> <a name="id" id="cdk-devops.StackMetadata.fromEnvironment.parameter.id"></a>
+
+- *Type:* string
+
+---
+
+###### `customEnvVars`<sup>Optional</sup> <a name="customEnvVars" id="cdk-devops.StackMetadata.fromEnvironment.parameter.customEnvVars"></a>
+
+- *Type:* <a href="#cdk-devops.CustomEnvVarConfig">CustomEnvVarConfig</a>
+
+---
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#cdk-devops.StackMetadata.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#cdk-devops.StackMetadata.property.pipelineInfo">pipelineInfo</a></code> | <code><a href="#cdk-devops.PipelineInfo">PipelineInfo</a></code> | The pipeline information. |
+| <code><a href="#cdk-devops.StackMetadata.property.repoInfo">repoInfo</a></code> | <code><a href="#cdk-devops.RepoInfo">RepoInfo</a></code> | The repository information. |
+
+---
+
+##### `node`<sup>Required</sup> <a name="node" id="cdk-devops.StackMetadata.property.node"></a>
+
+```typescript
+public readonly node: Node;
+```
+
+- *Type:* constructs.Node
+
+The tree node.
+
+---
+
+##### `pipelineInfo`<sup>Required</sup> <a name="pipelineInfo" id="cdk-devops.StackMetadata.property.pipelineInfo"></a>
+
+```typescript
+public readonly pipelineInfo: PipelineInfo;
+```
+
+- *Type:* <a href="#cdk-devops.PipelineInfo">PipelineInfo</a>
+
+The pipeline information.
+
+---
+
+##### `repoInfo`<sup>Required</sup> <a name="repoInfo" id="cdk-devops.StackMetadata.property.repoInfo"></a>
+
+```typescript
+public readonly repoInfo: RepoInfo;
+```
+
+- *Type:* <a href="#cdk-devops.RepoInfo">RepoInfo</a>
+
+The repository information.
+
+---
+
+
 ### VersionOutputs <a name="VersionOutputs" id="cdk-devops.VersionOutputs"></a>
 
 Construct for creating version outputs in CloudFormation and SSM Parameter Store.
@@ -467,6 +694,129 @@ Repository URL.
 
 ---
 
+### CustomEnvVarConfig <a name="CustomEnvVarConfig" id="cdk-devops.CustomEnvVarConfig"></a>
+
+Custom environment variable names for overriding defaults.
+
+#### Initializer <a name="Initializer" id="cdk-devops.CustomEnvVarConfig.Initializer"></a>
+
+```typescript
+import { CustomEnvVarConfig } from 'cdk-devops'
+
+const customEnvVarConfig: CustomEnvVarConfig = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#cdk-devops.CustomEnvVarConfig.property.branch">branch</a></code> | <code>string</code> | Custom environment variable for branch name. |
+| <code><a href="#cdk-devops.CustomEnvVarConfig.property.commitHash">commitHash</a></code> | <code>string</code> | Custom environment variable for commit hash. |
+| <code><a href="#cdk-devops.CustomEnvVarConfig.property.jobId">jobId</a></code> | <code>string</code> | Custom environment variable for job ID. |
+| <code><a href="#cdk-devops.CustomEnvVarConfig.property.jobUrl">jobUrl</a></code> | <code>string</code> | Custom environment variable for job URL. |
+| <code><a href="#cdk-devops.CustomEnvVarConfig.property.repoName">repoName</a></code> | <code>string</code> | Custom environment variable for repository name. |
+| <code><a href="#cdk-devops.CustomEnvVarConfig.property.repoOwner">repoOwner</a></code> | <code>string</code> | Custom environment variable for repository owner. |
+| <code><a href="#cdk-devops.CustomEnvVarConfig.property.triggeredBy">triggeredBy</a></code> | <code>string</code> | Custom environment variable for triggered by user. |
+| <code><a href="#cdk-devops.CustomEnvVarConfig.property.workflowName">workflowName</a></code> | <code>string</code> | Custom environment variable for workflow name. |
+
+---
+
+##### `branch`<sup>Optional</sup> <a name="branch" id="cdk-devops.CustomEnvVarConfig.property.branch"></a>
+
+```typescript
+public readonly branch: string;
+```
+
+- *Type:* string
+
+Custom environment variable for branch name.
+
+---
+
+##### `commitHash`<sup>Optional</sup> <a name="commitHash" id="cdk-devops.CustomEnvVarConfig.property.commitHash"></a>
+
+```typescript
+public readonly commitHash: string;
+```
+
+- *Type:* string
+
+Custom environment variable for commit hash.
+
+---
+
+##### `jobId`<sup>Optional</sup> <a name="jobId" id="cdk-devops.CustomEnvVarConfig.property.jobId"></a>
+
+```typescript
+public readonly jobId: string;
+```
+
+- *Type:* string
+
+Custom environment variable for job ID.
+
+---
+
+##### `jobUrl`<sup>Optional</sup> <a name="jobUrl" id="cdk-devops.CustomEnvVarConfig.property.jobUrl"></a>
+
+```typescript
+public readonly jobUrl: string;
+```
+
+- *Type:* string
+
+Custom environment variable for job URL.
+
+---
+
+##### `repoName`<sup>Optional</sup> <a name="repoName" id="cdk-devops.CustomEnvVarConfig.property.repoName"></a>
+
+```typescript
+public readonly repoName: string;
+```
+
+- *Type:* string
+
+Custom environment variable for repository name.
+
+---
+
+##### `repoOwner`<sup>Optional</sup> <a name="repoOwner" id="cdk-devops.CustomEnvVarConfig.property.repoOwner"></a>
+
+```typescript
+public readonly repoOwner: string;
+```
+
+- *Type:* string
+
+Custom environment variable for repository owner.
+
+---
+
+##### `triggeredBy`<sup>Optional</sup> <a name="triggeredBy" id="cdk-devops.CustomEnvVarConfig.property.triggeredBy"></a>
+
+```typescript
+public readonly triggeredBy: string;
+```
+
+- *Type:* string
+
+Custom environment variable for triggered by user.
+
+---
+
+##### `workflowName`<sup>Optional</sup> <a name="workflowName" id="cdk-devops.CustomEnvVarConfig.property.workflowName"></a>
+
+```typescript
+public readonly workflowName: string;
+```
+
+- *Type:* string
+
+Custom environment variable for workflow name.
+
+---
+
 ### GitInfo <a name="GitInfo" id="cdk-devops.GitInfo"></a>
 
 Git repository information.
@@ -859,6 +1209,532 @@ public readonly splitParameters: boolean;
 - *Default:* false
 
 Whether to split version info into separate parameters.
+
+---
+
+### PipelineInfo <a name="PipelineInfo" id="cdk-devops.PipelineInfo"></a>
+
+Pipeline execution information.
+
+#### Initializer <a name="Initializer" id="cdk-devops.PipelineInfo.Initializer"></a>
+
+```typescript
+import { PipelineInfo } from 'cdk-devops'
+
+const pipelineInfo: PipelineInfo = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#cdk-devops.PipelineInfo.property.provider">provider</a></code> | <code><a href="#cdk-devops.CiProvider">CiProvider</a></code> | CI/CD provider. |
+| <code><a href="#cdk-devops.PipelineInfo.property.additionalInfo">additionalInfo</a></code> | <code>{[ key: string ]: string}</code> | Additional provider-specific information. |
+| <code><a href="#cdk-devops.PipelineInfo.property.event">event</a></code> | <code>string</code> | Event that triggered the workflow. |
+| <code><a href="#cdk-devops.PipelineInfo.property.jobId">jobId</a></code> | <code>string</code> | Job/build ID. |
+| <code><a href="#cdk-devops.PipelineInfo.property.jobUrl">jobUrl</a></code> | <code>string</code> | Job/build URL. |
+| <code><a href="#cdk-devops.PipelineInfo.property.runAttempt">runAttempt</a></code> | <code>string</code> | Run attempt (for retries). |
+| <code><a href="#cdk-devops.PipelineInfo.property.runNumber">runNumber</a></code> | <code>string</code> | Run number. |
+| <code><a href="#cdk-devops.PipelineInfo.property.triggeredBy">triggeredBy</a></code> | <code>string</code> | User who triggered the job. |
+| <code><a href="#cdk-devops.PipelineInfo.property.workflowName">workflowName</a></code> | <code>string</code> | Workflow/pipeline name. |
+
+---
+
+##### `provider`<sup>Required</sup> <a name="provider" id="cdk-devops.PipelineInfo.property.provider"></a>
+
+```typescript
+public readonly provider: CiProvider;
+```
+
+- *Type:* <a href="#cdk-devops.CiProvider">CiProvider</a>
+
+CI/CD provider.
+
+---
+
+##### `additionalInfo`<sup>Optional</sup> <a name="additionalInfo" id="cdk-devops.PipelineInfo.property.additionalInfo"></a>
+
+```typescript
+public readonly additionalInfo: {[ key: string ]: string};
+```
+
+- *Type:* {[ key: string ]: string}
+
+Additional provider-specific information.
+
+---
+
+##### `event`<sup>Optional</sup> <a name="event" id="cdk-devops.PipelineInfo.property.event"></a>
+
+```typescript
+public readonly event: string;
+```
+
+- *Type:* string
+
+Event that triggered the workflow.
+
+---
+
+##### `jobId`<sup>Optional</sup> <a name="jobId" id="cdk-devops.PipelineInfo.property.jobId"></a>
+
+```typescript
+public readonly jobId: string;
+```
+
+- *Type:* string
+
+Job/build ID.
+
+---
+
+##### `jobUrl`<sup>Optional</sup> <a name="jobUrl" id="cdk-devops.PipelineInfo.property.jobUrl"></a>
+
+```typescript
+public readonly jobUrl: string;
+```
+
+- *Type:* string
+
+Job/build URL.
+
+---
+
+##### `runAttempt`<sup>Optional</sup> <a name="runAttempt" id="cdk-devops.PipelineInfo.property.runAttempt"></a>
+
+```typescript
+public readonly runAttempt: string;
+```
+
+- *Type:* string
+
+Run attempt (for retries).
+
+---
+
+##### `runNumber`<sup>Optional</sup> <a name="runNumber" id="cdk-devops.PipelineInfo.property.runNumber"></a>
+
+```typescript
+public readonly runNumber: string;
+```
+
+- *Type:* string
+
+Run number.
+
+---
+
+##### `triggeredBy`<sup>Optional</sup> <a name="triggeredBy" id="cdk-devops.PipelineInfo.property.triggeredBy"></a>
+
+```typescript
+public readonly triggeredBy: string;
+```
+
+- *Type:* string
+
+User who triggered the job.
+
+---
+
+##### `workflowName`<sup>Optional</sup> <a name="workflowName" id="cdk-devops.PipelineInfo.property.workflowName"></a>
+
+```typescript
+public readonly workflowName: string;
+```
+
+- *Type:* string
+
+Workflow/pipeline name.
+
+---
+
+### PipelineInfoProps <a name="PipelineInfoProps" id="cdk-devops.PipelineInfoProps"></a>
+
+Props for creating PipelineInfo.
+
+#### Initializer <a name="Initializer" id="cdk-devops.PipelineInfoProps.Initializer"></a>
+
+```typescript
+import { PipelineInfoProps } from 'cdk-devops'
+
+const pipelineInfoProps: PipelineInfoProps = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#cdk-devops.PipelineInfoProps.property.provider">provider</a></code> | <code><a href="#cdk-devops.CiProvider">CiProvider</a></code> | CI/CD provider. |
+| <code><a href="#cdk-devops.PipelineInfoProps.property.additionalInfo">additionalInfo</a></code> | <code>{[ key: string ]: string}</code> | Additional provider-specific information. |
+| <code><a href="#cdk-devops.PipelineInfoProps.property.event">event</a></code> | <code>string</code> | Event that triggered the workflow. |
+| <code><a href="#cdk-devops.PipelineInfoProps.property.jobId">jobId</a></code> | <code>string</code> | Job/build ID. |
+| <code><a href="#cdk-devops.PipelineInfoProps.property.jobUrl">jobUrl</a></code> | <code>string</code> | Job/build URL. |
+| <code><a href="#cdk-devops.PipelineInfoProps.property.runAttempt">runAttempt</a></code> | <code>string</code> | Run attempt (for retries). |
+| <code><a href="#cdk-devops.PipelineInfoProps.property.runNumber">runNumber</a></code> | <code>string</code> | Run number. |
+| <code><a href="#cdk-devops.PipelineInfoProps.property.triggeredBy">triggeredBy</a></code> | <code>string</code> | User who triggered the job. |
+| <code><a href="#cdk-devops.PipelineInfoProps.property.workflowName">workflowName</a></code> | <code>string</code> | Workflow/pipeline name. |
+
+---
+
+##### `provider`<sup>Required</sup> <a name="provider" id="cdk-devops.PipelineInfoProps.property.provider"></a>
+
+```typescript
+public readonly provider: CiProvider;
+```
+
+- *Type:* <a href="#cdk-devops.CiProvider">CiProvider</a>
+
+CI/CD provider.
+
+---
+
+##### `additionalInfo`<sup>Optional</sup> <a name="additionalInfo" id="cdk-devops.PipelineInfoProps.property.additionalInfo"></a>
+
+```typescript
+public readonly additionalInfo: {[ key: string ]: string};
+```
+
+- *Type:* {[ key: string ]: string}
+
+Additional provider-specific information.
+
+---
+
+##### `event`<sup>Optional</sup> <a name="event" id="cdk-devops.PipelineInfoProps.property.event"></a>
+
+```typescript
+public readonly event: string;
+```
+
+- *Type:* string
+
+Event that triggered the workflow.
+
+---
+
+##### `jobId`<sup>Optional</sup> <a name="jobId" id="cdk-devops.PipelineInfoProps.property.jobId"></a>
+
+```typescript
+public readonly jobId: string;
+```
+
+- *Type:* string
+
+Job/build ID.
+
+---
+
+##### `jobUrl`<sup>Optional</sup> <a name="jobUrl" id="cdk-devops.PipelineInfoProps.property.jobUrl"></a>
+
+```typescript
+public readonly jobUrl: string;
+```
+
+- *Type:* string
+
+Job/build URL.
+
+---
+
+##### `runAttempt`<sup>Optional</sup> <a name="runAttempt" id="cdk-devops.PipelineInfoProps.property.runAttempt"></a>
+
+```typescript
+public readonly runAttempt: string;
+```
+
+- *Type:* string
+
+Run attempt (for retries).
+
+---
+
+##### `runNumber`<sup>Optional</sup> <a name="runNumber" id="cdk-devops.PipelineInfoProps.property.runNumber"></a>
+
+```typescript
+public readonly runNumber: string;
+```
+
+- *Type:* string
+
+Run number.
+
+---
+
+##### `triggeredBy`<sup>Optional</sup> <a name="triggeredBy" id="cdk-devops.PipelineInfoProps.property.triggeredBy"></a>
+
+```typescript
+public readonly triggeredBy: string;
+```
+
+- *Type:* string
+
+User who triggered the job.
+
+---
+
+##### `workflowName`<sup>Optional</sup> <a name="workflowName" id="cdk-devops.PipelineInfoProps.property.workflowName"></a>
+
+```typescript
+public readonly workflowName: string;
+```
+
+- *Type:* string
+
+Workflow/pipeline name.
+
+---
+
+### RepoInfo <a name="RepoInfo" id="cdk-devops.RepoInfo"></a>
+
+Repository information.
+
+#### Initializer <a name="Initializer" id="cdk-devops.RepoInfo.Initializer"></a>
+
+```typescript
+import { RepoInfo } from 'cdk-devops'
+
+const repoInfo: RepoInfo = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#cdk-devops.RepoInfo.property.branch">branch</a></code> | <code>string</code> | Branch name. |
+| <code><a href="#cdk-devops.RepoInfo.property.commitHash">commitHash</a></code> | <code>string</code> | Commit hash. |
+| <code><a href="#cdk-devops.RepoInfo.property.provider">provider</a></code> | <code><a href="#cdk-devops.CiProvider">CiProvider</a></code> | CI/CD provider (github/gitlab/codebuild). |
+| <code><a href="#cdk-devops.RepoInfo.property.repository">repository</a></code> | <code>string</code> | Repository name. |
+| <code><a href="#cdk-devops.RepoInfo.property.owner">owner</a></code> | <code>string</code> | Repository owner/organization. |
+
+---
+
+##### `branch`<sup>Required</sup> <a name="branch" id="cdk-devops.RepoInfo.property.branch"></a>
+
+```typescript
+public readonly branch: string;
+```
+
+- *Type:* string
+
+Branch name.
+
+---
+
+##### `commitHash`<sup>Required</sup> <a name="commitHash" id="cdk-devops.RepoInfo.property.commitHash"></a>
+
+```typescript
+public readonly commitHash: string;
+```
+
+- *Type:* string
+
+Commit hash.
+
+---
+
+##### `provider`<sup>Required</sup> <a name="provider" id="cdk-devops.RepoInfo.property.provider"></a>
+
+```typescript
+public readonly provider: CiProvider;
+```
+
+- *Type:* <a href="#cdk-devops.CiProvider">CiProvider</a>
+
+CI/CD provider (github/gitlab/codebuild).
+
+---
+
+##### `repository`<sup>Required</sup> <a name="repository" id="cdk-devops.RepoInfo.property.repository"></a>
+
+```typescript
+public readonly repository: string;
+```
+
+- *Type:* string
+
+Repository name.
+
+---
+
+##### `owner`<sup>Optional</sup> <a name="owner" id="cdk-devops.RepoInfo.property.owner"></a>
+
+```typescript
+public readonly owner: string;
+```
+
+- *Type:* string
+
+Repository owner/organization.
+
+---
+
+### RepoInfoProps <a name="RepoInfoProps" id="cdk-devops.RepoInfoProps"></a>
+
+Props for creating RepoInfo.
+
+#### Initializer <a name="Initializer" id="cdk-devops.RepoInfoProps.Initializer"></a>
+
+```typescript
+import { RepoInfoProps } from 'cdk-devops'
+
+const repoInfoProps: RepoInfoProps = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#cdk-devops.RepoInfoProps.property.branch">branch</a></code> | <code>string</code> | Branch name. |
+| <code><a href="#cdk-devops.RepoInfoProps.property.commitHash">commitHash</a></code> | <code>string</code> | Commit hash. |
+| <code><a href="#cdk-devops.RepoInfoProps.property.provider">provider</a></code> | <code><a href="#cdk-devops.CiProvider">CiProvider</a></code> | CI/CD provider. |
+| <code><a href="#cdk-devops.RepoInfoProps.property.repository">repository</a></code> | <code>string</code> | Repository name. |
+| <code><a href="#cdk-devops.RepoInfoProps.property.owner">owner</a></code> | <code>string</code> | Repository owner/organization. |
+
+---
+
+##### `branch`<sup>Required</sup> <a name="branch" id="cdk-devops.RepoInfoProps.property.branch"></a>
+
+```typescript
+public readonly branch: string;
+```
+
+- *Type:* string
+
+Branch name.
+
+---
+
+##### `commitHash`<sup>Required</sup> <a name="commitHash" id="cdk-devops.RepoInfoProps.property.commitHash"></a>
+
+```typescript
+public readonly commitHash: string;
+```
+
+- *Type:* string
+
+Commit hash.
+
+---
+
+##### `provider`<sup>Required</sup> <a name="provider" id="cdk-devops.RepoInfoProps.property.provider"></a>
+
+```typescript
+public readonly provider: CiProvider;
+```
+
+- *Type:* <a href="#cdk-devops.CiProvider">CiProvider</a>
+
+CI/CD provider.
+
+---
+
+##### `repository`<sup>Required</sup> <a name="repository" id="cdk-devops.RepoInfoProps.property.repository"></a>
+
+```typescript
+public readonly repository: string;
+```
+
+- *Type:* string
+
+Repository name.
+
+---
+
+##### `owner`<sup>Optional</sup> <a name="owner" id="cdk-devops.RepoInfoProps.property.owner"></a>
+
+```typescript
+public readonly owner: string;
+```
+
+- *Type:* string
+
+Repository owner/organization.
+
+---
+
+### StackMetadataProps <a name="StackMetadataProps" id="cdk-devops.StackMetadataProps"></a>
+
+Props for StackMetadata construct.
+
+#### Initializer <a name="Initializer" id="cdk-devops.StackMetadataProps.Initializer"></a>
+
+```typescript
+import { StackMetadataProps } from 'cdk-devops'
+
+const stackMetadataProps: StackMetadataProps = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#cdk-devops.StackMetadataProps.property.customEnvVars">customEnvVars</a></code> | <code><a href="#cdk-devops.CustomEnvVarConfig">CustomEnvVarConfig</a></code> | Custom environment variable names for overriding defaults Only used when repoInfo and pipelineInfo are not provided. |
+| <code><a href="#cdk-devops.StackMetadataProps.property.pipelineInfo">pipelineInfo</a></code> | <code><a href="#cdk-devops.PipelineInfo">PipelineInfo</a></code> | Pipeline information If not provided, will be extracted from environment variables. |
+| <code><a href="#cdk-devops.StackMetadataProps.property.pipelineMetadataKey">pipelineMetadataKey</a></code> | <code>string</code> | Metadata key for pipeline information. |
+| <code><a href="#cdk-devops.StackMetadataProps.property.repoInfo">repoInfo</a></code> | <code><a href="#cdk-devops.RepoInfo">RepoInfo</a></code> | Repository information If not provided, will be extracted from environment variables. |
+| <code><a href="#cdk-devops.StackMetadataProps.property.repoMetadataKey">repoMetadataKey</a></code> | <code>string</code> | Metadata key for repository information. |
+
+---
+
+##### `customEnvVars`<sup>Optional</sup> <a name="customEnvVars" id="cdk-devops.StackMetadataProps.property.customEnvVars"></a>
+
+```typescript
+public readonly customEnvVars: CustomEnvVarConfig;
+```
+
+- *Type:* <a href="#cdk-devops.CustomEnvVarConfig">CustomEnvVarConfig</a>
+
+Custom environment variable names for overriding defaults Only used when repoInfo and pipelineInfo are not provided.
+
+---
+
+##### `pipelineInfo`<sup>Optional</sup> <a name="pipelineInfo" id="cdk-devops.StackMetadataProps.property.pipelineInfo"></a>
+
+```typescript
+public readonly pipelineInfo: PipelineInfo;
+```
+
+- *Type:* <a href="#cdk-devops.PipelineInfo">PipelineInfo</a>
+
+Pipeline information If not provided, will be extracted from environment variables.
+
+---
+
+##### `pipelineMetadataKey`<sup>Optional</sup> <a name="pipelineMetadataKey" id="cdk-devops.StackMetadataProps.property.pipelineMetadataKey"></a>
+
+```typescript
+public readonly pipelineMetadataKey: string;
+```
+
+- *Type:* string
+- *Default:* 'Pipeline'
+
+Metadata key for pipeline information.
+
+---
+
+##### `repoInfo`<sup>Optional</sup> <a name="repoInfo" id="cdk-devops.StackMetadataProps.property.repoInfo"></a>
+
+```typescript
+public readonly repoInfo: RepoInfo;
+```
+
+- *Type:* <a href="#cdk-devops.RepoInfo">RepoInfo</a>
+
+Repository information If not provided, will be extracted from environment variables.
+
+---
+
+##### `repoMetadataKey`<sup>Optional</sup> <a name="repoMetadataKey" id="cdk-devops.StackMetadataProps.property.repoMetadataKey"></a>
+
+```typescript
+public readonly repoMetadataKey: string;
+```
+
+- *Type:* string
+- *Default:* 'Repo'
+
+Metadata key for repository information.
 
 ---
 
@@ -1479,6 +2355,139 @@ Shorten a git commit hash to 8 characters.
 ###### `length`<sup>Optional</sup> <a name="length" id="cdk-devops.GitInfoHelper.shortenHash.parameter.length"></a>
 
 - *Type:* number
+
+---
+
+
+
+### PipelineInfoHelper <a name="PipelineInfoHelper" id="cdk-devops.PipelineInfoHelper"></a>
+
+Helper class for working with pipeline information.
+
+#### Initializers <a name="Initializers" id="cdk-devops.PipelineInfoHelper.Initializer"></a>
+
+```typescript
+import { PipelineInfoHelper } from 'cdk-devops'
+
+new PipelineInfoHelper()
+```
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+
+---
+
+
+#### Static Functions <a name="Static Functions" id="Static Functions"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#cdk-devops.PipelineInfoHelper.create">create</a></code> | Create PipelineInfo from individual components. |
+| <code><a href="#cdk-devops.PipelineInfoHelper.fromEnvironment">fromEnvironment</a></code> | Create PipelineInfo from environment variables (CI/CD context). |
+
+---
+
+##### `create` <a name="create" id="cdk-devops.PipelineInfoHelper.create"></a>
+
+```typescript
+import { PipelineInfoHelper } from 'cdk-devops'
+
+PipelineInfoHelper.create(props: PipelineInfoProps)
+```
+
+Create PipelineInfo from individual components.
+
+###### `props`<sup>Required</sup> <a name="props" id="cdk-devops.PipelineInfoHelper.create.parameter.props"></a>
+
+- *Type:* <a href="#cdk-devops.PipelineInfoProps">PipelineInfoProps</a>
+
+---
+
+##### `fromEnvironment` <a name="fromEnvironment" id="cdk-devops.PipelineInfoHelper.fromEnvironment"></a>
+
+```typescript
+import { PipelineInfoHelper } from 'cdk-devops'
+
+PipelineInfoHelper.fromEnvironment(customEnvVars?: CustomEnvVarConfig)
+```
+
+Create PipelineInfo from environment variables (CI/CD context).
+
+###### `customEnvVars`<sup>Optional</sup> <a name="customEnvVars" id="cdk-devops.PipelineInfoHelper.fromEnvironment.parameter.customEnvVars"></a>
+
+- *Type:* <a href="#cdk-devops.CustomEnvVarConfig">CustomEnvVarConfig</a>
+
+---
+
+
+
+### RepoInfoHelper <a name="RepoInfoHelper" id="cdk-devops.RepoInfoHelper"></a>
+
+Helper class for working with repository information.
+
+#### Initializers <a name="Initializers" id="cdk-devops.RepoInfoHelper.Initializer"></a>
+
+```typescript
+import { RepoInfoHelper } from 'cdk-devops'
+
+new RepoInfoHelper()
+```
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+
+---
+
+
+#### Static Functions <a name="Static Functions" id="Static Functions"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#cdk-devops.RepoInfoHelper.create">create</a></code> | Create RepoInfo from individual components. |
+| <code><a href="#cdk-devops.RepoInfoHelper.detectProvider">detectProvider</a></code> | Detect CI/CD provider from environment variables. |
+| <code><a href="#cdk-devops.RepoInfoHelper.fromEnvironment">fromEnvironment</a></code> | Create RepoInfo from environment variables (CI/CD context). |
+
+---
+
+##### `create` <a name="create" id="cdk-devops.RepoInfoHelper.create"></a>
+
+```typescript
+import { RepoInfoHelper } from 'cdk-devops'
+
+RepoInfoHelper.create(props: RepoInfoProps)
+```
+
+Create RepoInfo from individual components.
+
+###### `props`<sup>Required</sup> <a name="props" id="cdk-devops.RepoInfoHelper.create.parameter.props"></a>
+
+- *Type:* <a href="#cdk-devops.RepoInfoProps">RepoInfoProps</a>
+
+---
+
+##### `detectProvider` <a name="detectProvider" id="cdk-devops.RepoInfoHelper.detectProvider"></a>
+
+```typescript
+import { RepoInfoHelper } from 'cdk-devops'
+
+RepoInfoHelper.detectProvider()
+```
+
+Detect CI/CD provider from environment variables.
+
+##### `fromEnvironment` <a name="fromEnvironment" id="cdk-devops.RepoInfoHelper.fromEnvironment"></a>
+
+```typescript
+import { RepoInfoHelper } from 'cdk-devops'
+
+RepoInfoHelper.fromEnvironment(customEnvVars?: CustomEnvVarConfig)
+```
+
+Create RepoInfo from environment variables (CI/CD context).
+
+###### `customEnvVars`<sup>Optional</sup> <a name="customEnvVars" id="cdk-devops.RepoInfoHelper.fromEnvironment.parameter.customEnvVars"></a>
+
+- *Type:* <a href="#cdk-devops.CustomEnvVarConfig">CustomEnvVarConfig</a>
 
 ---
 
@@ -2631,6 +3640,42 @@ public readonly format: string;
 - *Type:* string
 
 Format string for version computation Supports placeholders: {git-tag}, {package-version}, {commit-count}, {commit-hash}, {branch}, {build-number}.
+
+---
+
+## Enums <a name="Enums" id="Enums"></a>
+
+### CiProvider <a name="CiProvider" id="cdk-devops.CiProvider"></a>
+
+CI/CD provider type.
+
+#### Members <a name="Members" id="Members"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#cdk-devops.CiProvider.GITHUB">GITHUB</a></code> | *No description.* |
+| <code><a href="#cdk-devops.CiProvider.GITLAB">GITLAB</a></code> | *No description.* |
+| <code><a href="#cdk-devops.CiProvider.CODEBUILD">CODEBUILD</a></code> | *No description.* |
+| <code><a href="#cdk-devops.CiProvider.UNKNOWN">UNKNOWN</a></code> | *No description.* |
+
+---
+
+##### `GITHUB` <a name="GITHUB" id="cdk-devops.CiProvider.GITHUB"></a>
+
+---
+
+
+##### `GITLAB` <a name="GITLAB" id="cdk-devops.CiProvider.GITLAB"></a>
+
+---
+
+
+##### `CODEBUILD` <a name="CODEBUILD" id="cdk-devops.CiProvider.CODEBUILD"></a>
+
+---
+
+
+##### `UNKNOWN` <a name="UNKNOWN" id="cdk-devops.CiProvider.UNKNOWN"></a>
 
 ---
 
