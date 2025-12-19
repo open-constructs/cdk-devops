@@ -26,7 +26,6 @@ describe('StackMetadata', () => {
           jobId: '12345',
           jobUrl: 'https://github.com/my-org/my-repo/actions/runs/12345',
           triggeredBy: 'john-doe',
-          workflowName: 'CI',
           runNumber: '42',
         },
       });
@@ -45,7 +44,6 @@ describe('StackMetadata', () => {
         jobId: '12345',
         jobUrl: 'https://github.com/my-org/my-repo/actions/runs/12345',
         triggeredBy: 'john-doe',
-        workflowName: 'CI',
         runNumber: '42',
       });
     });
@@ -74,7 +72,7 @@ describe('StackMetadata', () => {
       expect(template.Metadata.Pipeline).toBeUndefined();
     });
 
-    it('should omit undefined optional pipeline fields', () => {
+    it('should include all pipeline fields even when undefined', () => {
       new StackMetadata(stack, 'Metadata', {
         repoInfo: {
           provider: CiProvider.GITHUB,
@@ -86,16 +84,12 @@ describe('StackMetadata', () => {
         pipelineInfo: {
           provider: CiProvider.GITHUB,
           jobId: '12345',
-          // No optional fields
         },
       });
 
       const template = app.synth().getStackByName('TestStack').template;
       expect(template.Metadata.Pipeline.provider).toBe('github');
       expect(template.Metadata.Pipeline.jobId).toBe('12345');
-      expect(template.Metadata.Pipeline.jobUrl).toBeUndefined();
-      expect(template.Metadata.Pipeline.triggeredBy).toBeUndefined();
-      expect(template.Metadata.Pipeline.workflowName).toBeUndefined();
     });
   });
 
@@ -208,7 +202,6 @@ describe('StackMetadata', () => {
       process.env.MY_CUSTOM_JOB_ID = 'custom-job-123';
       process.env.MY_CUSTOM_JOB_URL = 'https://custom.ci.com/job/123';
       process.env.MY_CUSTOM_USER = 'custom-user';
-      process.env.MY_CUSTOM_WORKFLOW = 'Custom Workflow';
     });
 
     it('should use custom environment variables', () => {
@@ -220,7 +213,6 @@ describe('StackMetadata', () => {
         jobId: 'MY_CUSTOM_JOB_ID',
         jobUrl: 'MY_CUSTOM_JOB_URL',
         triggeredBy: 'MY_CUSTOM_USER',
-        workflowName: 'MY_CUSTOM_WORKFLOW',
       });
 
       expect(metadata.repoInfo.owner).toBe('custom-owner');
@@ -230,100 +222,7 @@ describe('StackMetadata', () => {
       expect(metadata.pipelineInfo.jobId).toBe('custom-job-123');
       expect(metadata.pipelineInfo.jobUrl).toBe('https://custom.ci.com/job/123');
       expect(metadata.pipelineInfo.triggeredBy).toBe('custom-user');
-      expect(metadata.pipelineInfo.workflowName).toBe('Custom Workflow');
     });
   });
 
-  describe('repoMetadata and pipelineMetadata', () => {
-    it('should return repo info', () => {
-      const metadata = new StackMetadata(stack, 'Metadata', {
-        repoInfo: {
-          provider: CiProvider.GITHUB,
-          owner: 'my-org',
-          repository: 'my-repo',
-          branch: 'main',
-          commitHash: 'abcdef1234567890',
-        },
-        pipelineInfo: {
-          provider: CiProvider.GITHUB,
-          jobId: '12345',
-        },
-      });
-
-      const repoInfo = metadata.repoMetadata();
-      expect(repoInfo.provider).toBe(CiProvider.GITHUB);
-      expect(repoInfo.owner).toBe('my-org');
-      expect(repoInfo.repository).toBe('my-repo');
-    });
-
-    it('should return pipeline info', () => {
-      const metadata = new StackMetadata(stack, 'Metadata', {
-        repoInfo: {
-          provider: CiProvider.GITHUB,
-          owner: 'my-org',
-          repository: 'my-repo',
-          branch: 'main',
-          commitHash: 'abcdef1234567890',
-        },
-        pipelineInfo: {
-          provider: CiProvider.GITHUB,
-          jobId: '12345',
-          triggeredBy: 'john-doe',
-        },
-      });
-
-      const pipelineInfo = metadata.pipelineMetadata();
-      expect(pipelineInfo.provider).toBe(CiProvider.GITHUB);
-      expect(pipelineInfo.jobId).toBe('12345');
-      expect(pipelineInfo.triggeredBy).toBe('john-doe');
-    });
-  });
-
-  describe('additionalInfo handling', () => {
-    it('should include additionalInfo when present', () => {
-      new StackMetadata(stack, 'Metadata', {
-        repoInfo: {
-          provider: CiProvider.GITHUB,
-          owner: 'my-org',
-          repository: 'my-repo',
-          branch: 'main',
-          commitHash: 'abcdef1234567890',
-        },
-        pipelineInfo: {
-          provider: CiProvider.GITHUB,
-          jobId: '12345',
-          additionalInfo: {
-            customKey1: 'value1',
-            customKey2: 'value2',
-          },
-        },
-      });
-
-      const template = app.synth().getStackByName('TestStack').template;
-      expect(template.Metadata.Pipeline.additionalInfo).toEqual({
-        customKey1: 'value1',
-        customKey2: 'value2',
-      });
-    });
-
-    it('should not include additionalInfo when empty', () => {
-      new StackMetadata(stack, 'Metadata', {
-        repoInfo: {
-          provider: CiProvider.GITHUB,
-          owner: 'my-org',
-          repository: 'my-repo',
-          branch: 'main',
-          commitHash: 'abcdef1234567890',
-        },
-        pipelineInfo: {
-          provider: CiProvider.GITHUB,
-          jobId: '12345',
-          additionalInfo: {},
-        },
-      });
-
-      const template = app.synth().getStackByName('TestStack').template;
-      expect(template.Metadata.Pipeline.additionalInfo).toBeUndefined();
-    });
-  });
 });

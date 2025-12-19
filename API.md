@@ -84,8 +84,6 @@ new StackMetadata(scope: Construct, id: string, props?: StackMetadataProps)
 | **Name** | **Description** |
 | --- | --- |
 | <code><a href="#cdk-devops.StackMetadata.toString">toString</a></code> | Returns a string representation of this construct. |
-| <code><a href="#cdk-devops.StackMetadata.pipelineMetadata">pipelineMetadata</a></code> | Get the pipeline information as a plain object. |
-| <code><a href="#cdk-devops.StackMetadata.repoMetadata">repoMetadata</a></code> | Get the repository information as a plain object. |
 
 ---
 
@@ -96,22 +94,6 @@ public toString(): string
 ```
 
 Returns a string representation of this construct.
-
-##### `pipelineMetadata` <a name="pipelineMetadata" id="cdk-devops.StackMetadata.pipelineMetadata"></a>
-
-```typescript
-public pipelineMetadata(): PipelineInfo
-```
-
-Get the pipeline information as a plain object.
-
-##### `repoMetadata` <a name="repoMetadata" id="cdk-devops.StackMetadata.repoMetadata"></a>
-
-```typescript
-public repoMetadata(): RepoInfo
-```
-
-Get the repository information as a plain object.
 
 #### Static Functions <a name="Static Functions" id="Static Functions"></a>
 
@@ -717,7 +699,6 @@ const customEnvVarConfig: CustomEnvVarConfig = { ... }
 | <code><a href="#cdk-devops.CustomEnvVarConfig.property.repoName">repoName</a></code> | <code>string</code> | Custom environment variable for repository name. |
 | <code><a href="#cdk-devops.CustomEnvVarConfig.property.repoOwner">repoOwner</a></code> | <code>string</code> | Custom environment variable for repository owner. |
 | <code><a href="#cdk-devops.CustomEnvVarConfig.property.triggeredBy">triggeredBy</a></code> | <code>string</code> | Custom environment variable for triggered by user. |
-| <code><a href="#cdk-devops.CustomEnvVarConfig.property.workflowName">workflowName</a></code> | <code>string</code> | Custom environment variable for workflow name. |
 
 ---
 
@@ -802,18 +783,6 @@ public readonly triggeredBy: string;
 - *Type:* string
 
 Custom environment variable for triggered by user.
-
----
-
-##### `workflowName`<sup>Optional</sup> <a name="workflowName" id="cdk-devops.CustomEnvVarConfig.property.workflowName"></a>
-
-```typescript
-public readonly workflowName: string;
-```
-
-- *Type:* string
-
-Custom environment variable for workflow name.
 
 ---
 
@@ -1229,14 +1198,10 @@ const pipelineInfo: PipelineInfo = { ... }
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#cdk-devops.PipelineInfo.property.provider">provider</a></code> | <code><a href="#cdk-devops.CiProvider">CiProvider</a></code> | CI/CD provider. |
-| <code><a href="#cdk-devops.PipelineInfo.property.additionalInfo">additionalInfo</a></code> | <code>{[ key: string ]: string}</code> | Additional provider-specific information. |
-| <code><a href="#cdk-devops.PipelineInfo.property.event">event</a></code> | <code>string</code> | Event that triggered the workflow. |
 | <code><a href="#cdk-devops.PipelineInfo.property.jobId">jobId</a></code> | <code>string</code> | Job/build ID. |
 | <code><a href="#cdk-devops.PipelineInfo.property.jobUrl">jobUrl</a></code> | <code>string</code> | Job/build URL. |
-| <code><a href="#cdk-devops.PipelineInfo.property.runAttempt">runAttempt</a></code> | <code>string</code> | Run attempt (for retries). |
 | <code><a href="#cdk-devops.PipelineInfo.property.runNumber">runNumber</a></code> | <code>string</code> | Run number. |
 | <code><a href="#cdk-devops.PipelineInfo.property.triggeredBy">triggeredBy</a></code> | <code>string</code> | User who triggered the job. |
-| <code><a href="#cdk-devops.PipelineInfo.property.workflowName">workflowName</a></code> | <code>string</code> | Workflow/pipeline name. |
 
 ---
 
@@ -1249,30 +1214,6 @@ public readonly provider: CiProvider;
 - *Type:* <a href="#cdk-devops.CiProvider">CiProvider</a>
 
 CI/CD provider.
-
----
-
-##### `additionalInfo`<sup>Optional</sup> <a name="additionalInfo" id="cdk-devops.PipelineInfo.property.additionalInfo"></a>
-
-```typescript
-public readonly additionalInfo: {[ key: string ]: string};
-```
-
-- *Type:* {[ key: string ]: string}
-
-Additional provider-specific information.
-
----
-
-##### `event`<sup>Optional</sup> <a name="event" id="cdk-devops.PipelineInfo.property.event"></a>
-
-```typescript
-public readonly event: string;
-```
-
-- *Type:* string
-
-Event that triggered the workflow.
 
 ---
 
@@ -1300,18 +1241,6 @@ Job/build URL.
 
 ---
 
-##### `runAttempt`<sup>Optional</sup> <a name="runAttempt" id="cdk-devops.PipelineInfo.property.runAttempt"></a>
-
-```typescript
-public readonly runAttempt: string;
-```
-
-- *Type:* string
-
-Run attempt (for retries).
-
----
-
 ##### `runNumber`<sup>Optional</sup> <a name="runNumber" id="cdk-devops.PipelineInfo.property.runNumber"></a>
 
 ```typescript
@@ -1336,18 +1265,6 @@ User who triggered the job.
 
 ---
 
-##### `workflowName`<sup>Optional</sup> <a name="workflowName" id="cdk-devops.PipelineInfo.property.workflowName"></a>
-
-```typescript
-public readonly workflowName: string;
-```
-
-- *Type:* string
-
-Workflow/pipeline name.
-
----
-
 ### PipelineInfoProps <a name="PipelineInfoProps" id="cdk-devops.PipelineInfoProps"></a>
 
 Props for creating PipelineInfo.
@@ -1365,14 +1282,10 @@ const pipelineInfoProps: PipelineInfoProps = { ... }
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#cdk-devops.PipelineInfoProps.property.provider">provider</a></code> | <code><a href="#cdk-devops.CiProvider">CiProvider</a></code> | CI/CD provider. |
-| <code><a href="#cdk-devops.PipelineInfoProps.property.additionalInfo">additionalInfo</a></code> | <code>{[ key: string ]: string}</code> | Additional provider-specific information. |
-| <code><a href="#cdk-devops.PipelineInfoProps.property.event">event</a></code> | <code>string</code> | Event that triggered the workflow. |
 | <code><a href="#cdk-devops.PipelineInfoProps.property.jobId">jobId</a></code> | <code>string</code> | Job/build ID. |
 | <code><a href="#cdk-devops.PipelineInfoProps.property.jobUrl">jobUrl</a></code> | <code>string</code> | Job/build URL. |
-| <code><a href="#cdk-devops.PipelineInfoProps.property.runAttempt">runAttempt</a></code> | <code>string</code> | Run attempt (for retries). |
 | <code><a href="#cdk-devops.PipelineInfoProps.property.runNumber">runNumber</a></code> | <code>string</code> | Run number. |
 | <code><a href="#cdk-devops.PipelineInfoProps.property.triggeredBy">triggeredBy</a></code> | <code>string</code> | User who triggered the job. |
-| <code><a href="#cdk-devops.PipelineInfoProps.property.workflowName">workflowName</a></code> | <code>string</code> | Workflow/pipeline name. |
 
 ---
 
@@ -1385,30 +1298,6 @@ public readonly provider: CiProvider;
 - *Type:* <a href="#cdk-devops.CiProvider">CiProvider</a>
 
 CI/CD provider.
-
----
-
-##### `additionalInfo`<sup>Optional</sup> <a name="additionalInfo" id="cdk-devops.PipelineInfoProps.property.additionalInfo"></a>
-
-```typescript
-public readonly additionalInfo: {[ key: string ]: string};
-```
-
-- *Type:* {[ key: string ]: string}
-
-Additional provider-specific information.
-
----
-
-##### `event`<sup>Optional</sup> <a name="event" id="cdk-devops.PipelineInfoProps.property.event"></a>
-
-```typescript
-public readonly event: string;
-```
-
-- *Type:* string
-
-Event that triggered the workflow.
 
 ---
 
@@ -1436,18 +1325,6 @@ Job/build URL.
 
 ---
 
-##### `runAttempt`<sup>Optional</sup> <a name="runAttempt" id="cdk-devops.PipelineInfoProps.property.runAttempt"></a>
-
-```typescript
-public readonly runAttempt: string;
-```
-
-- *Type:* string
-
-Run attempt (for retries).
-
----
-
 ##### `runNumber`<sup>Optional</sup> <a name="runNumber" id="cdk-devops.PipelineInfoProps.property.runNumber"></a>
 
 ```typescript
@@ -1469,18 +1346,6 @@ public readonly triggeredBy: string;
 - *Type:* string
 
 User who triggered the job.
-
----
-
-##### `workflowName`<sup>Optional</sup> <a name="workflowName" id="cdk-devops.PipelineInfoProps.property.workflowName"></a>
-
-```typescript
-public readonly workflowName: string;
-```
-
-- *Type:* string
-
-Workflow/pipeline name.
 
 ---
 

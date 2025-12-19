@@ -26,29 +26,10 @@ export interface PipelineInfoProps {
   readonly triggeredBy?: string;
 
   /**
-   * Workflow/pipeline name
-   */
-  readonly workflowName?: string;
-
-  /**
    * Run number
    */
   readonly runNumber?: string;
 
-  /**
-   * Run attempt (for retries)
-   */
-  readonly runAttempt?: string;
-
-  /**
-   * Event that triggered the workflow
-   */
-  readonly event?: string;
-
-  /**
-   * Additional provider-specific information
-   */
-  readonly additionalInfo?: Record<string, string>;
 }
 
 /**
@@ -64,11 +45,7 @@ export class PipelineInfoHelper {
       jobId: props.jobId,
       jobUrl: props.jobUrl,
       triggeredBy: props.triggeredBy,
-      workflowName: props.workflowName,
       runNumber: props.runNumber,
-      runAttempt: props.runAttempt,
-      event: props.event,
-      additionalInfo: props.additionalInfo,
     };
   }
 
@@ -107,16 +84,7 @@ export class PipelineInfoHelper {
       jobId: this.getEnvVar(customEnvVars?.jobId, 'GITHUB_RUN_ID'),
       jobUrl,
       triggeredBy: this.getEnvVar(customEnvVars?.triggeredBy, 'GITHUB_ACTOR', 'GITHUB_TRIGGERING_ACTOR'),
-      workflowName: this.getEnvVar(customEnvVars?.workflowName, 'GITHUB_WORKFLOW'),
       runNumber: process.env.GITHUB_RUN_NUMBER,
-      runAttempt: process.env.GITHUB_RUN_ATTEMPT,
-      event: process.env.GITHUB_EVENT_NAME,
-      additionalInfo: {
-        job: process.env.GITHUB_JOB || '',
-        action: process.env.GITHUB_ACTION || '',
-        ref: process.env.GITHUB_REF || '',
-        sha: process.env.GITHUB_SHA || '',
-      },
     });
   }
 
@@ -134,16 +102,7 @@ export class PipelineInfoHelper {
         'CI_COMMIT_AUTHOR',
         'GITLAB_USER_NAME',
       ),
-      workflowName: this.getEnvVar(customEnvVars?.workflowName, 'CI_PROJECT_NAME', 'CI_PIPELINE_NAME'),
       runNumber: process.env.CI_PIPELINE_IID,
-      event: process.env.CI_PIPELINE_SOURCE,
-      additionalInfo: {
-        jobName: process.env.CI_JOB_NAME || '',
-        jobStage: process.env.CI_JOB_STAGE || '',
-        pipelineId: process.env.CI_PIPELINE_ID || '',
-        projectPath: process.env.CI_PROJECT_PATH || '',
-        commitRef: process.env.CI_COMMIT_REF_NAME || '',
-      },
     });
   }
 
@@ -160,29 +119,12 @@ export class PipelineInfoHelper {
       ? `https://${region}.console.aws.amazon.com/codesuite/codebuild/projects/${buildId.split(':')[0]}/build/${encodeURIComponent(buildId)}`
       : this.getEnvVar(customEnvVars?.jobUrl);
 
-    // Extract workflow name from custom env var or build ARN
-    let workflowName: string | undefined;
-    if (customEnvVars?.workflowName && process.env[customEnvVars.workflowName]) {
-      workflowName = process.env[customEnvVars.workflowName];
-    } else if (process.env.CODEBUILD_BUILD_ARN) {
-      workflowName = process.env.CODEBUILD_BUILD_ARN.split(':')[5]?.split('/')[1];
-    }
-
     return this.create({
       provider: CiProvider.CODEBUILD,
       jobId: this.getEnvVar(customEnvVars?.jobId, 'CODEBUILD_BUILD_ID'),
       jobUrl,
       triggeredBy: this.getEnvVar(customEnvVars?.triggeredBy, 'CODEBUILD_INITIATOR'),
-      workflowName,
       runNumber: buildNumber,
-      additionalInfo: {
-        buildArn: process.env.CODEBUILD_BUILD_ARN || '',
-        buildNumber: buildNumber || '',
-        sourceVersion: process.env.CODEBUILD_SOURCE_VERSION || '',
-        webhookEvent: process.env.CODEBUILD_WEBHOOK_EVENT || '',
-        webhookTrigger: process.env.CODEBUILD_WEBHOOK_TRIGGER || '',
-        publicBuildUrl: process.env.CODEBUILD_PUBLIC_BUILD_URL || '',
-      },
     });
   }
 
@@ -195,9 +137,7 @@ export class PipelineInfoHelper {
       jobId: this.getEnvVar(customEnvVars?.jobId, 'BUILD_ID', 'JOB_ID'),
       jobUrl: this.getEnvVar(customEnvVars?.jobUrl, 'BUILD_URL', 'JOB_URL'),
       triggeredBy: this.getEnvVar(customEnvVars?.triggeredBy, 'BUILD_USER', 'USER'),
-      workflowName: this.getEnvVar(customEnvVars?.workflowName, 'WORKFLOW_NAME', 'PIPELINE_NAME'),
       runNumber: process.env.BUILD_NUMBER,
-      additionalInfo: {},
     });
   }
 

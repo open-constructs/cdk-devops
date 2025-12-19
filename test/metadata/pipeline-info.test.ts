@@ -9,24 +9,14 @@ describe('PipelineInfoHelper', () => {
         jobId: '12345',
         jobUrl: 'https://github.com/org/repo/actions/runs/12345',
         triggeredBy: 'user@example.com',
-        workflowName: 'CI',
         runNumber: '42',
-        runAttempt: '1',
-        event: 'push',
-        additionalInfo: {
-          custom: 'value',
-        },
       });
 
       expect(pipelineInfo.provider).toBe(CiProvider.GITHUB);
       expect(pipelineInfo.jobId).toBe('12345');
       expect(pipelineInfo.jobUrl).toBe('https://github.com/org/repo/actions/runs/12345');
       expect(pipelineInfo.triggeredBy).toBe('user@example.com');
-      expect(pipelineInfo.workflowName).toBe('CI');
       expect(pipelineInfo.runNumber).toBe('42');
-      expect(pipelineInfo.runAttempt).toBe('1');
-      expect(pipelineInfo.event).toBe('push');
-      expect(pipelineInfo.additionalInfo).toEqual({ custom: 'value' });
     });
 
     it('should create PipelineInfo with minimal properties', () => {
@@ -50,14 +40,7 @@ describe('PipelineInfoHelper', () => {
       process.env.GITHUB_REPOSITORY = 'my-org/my-repo';
       process.env.GITHUB_SERVER_URL = 'https://github.com';
       process.env.GITHUB_ACTOR = 'john-doe';
-      process.env.GITHUB_WORKFLOW = 'CI Pipeline';
       process.env.GITHUB_RUN_NUMBER = '42';
-      process.env.GITHUB_RUN_ATTEMPT = '1';
-      process.env.GITHUB_EVENT_NAME = 'push';
-      process.env.GITHUB_JOB = 'build';
-      process.env.GITHUB_ACTION = 'build-action';
-      process.env.GITHUB_REF = 'refs/heads/main';
-      process.env.GITHUB_SHA = 'abcdef1234567890';
 
       const pipelineInfo = PipelineInfoHelper.fromEnvironment();
 
@@ -65,16 +48,7 @@ describe('PipelineInfoHelper', () => {
       expect(pipelineInfo.jobId).toBe('12345');
       expect(pipelineInfo.jobUrl).toBe('https://github.com/my-org/my-repo/actions/runs/12345');
       expect(pipelineInfo.triggeredBy).toBe('john-doe');
-      expect(pipelineInfo.workflowName).toBe('CI Pipeline');
       expect(pipelineInfo.runNumber).toBe('42');
-      expect(pipelineInfo.runAttempt).toBe('1');
-      expect(pipelineInfo.event).toBe('push');
-      expect(pipelineInfo.additionalInfo).toEqual({
-        job: 'build',
-        action: 'build-action',
-        ref: 'refs/heads/main',
-        sha: 'abcdef1234567890',
-      });
     });
 
     it('should prefer GITHUB_TRIGGERING_ACTOR over GITHUB_ACTOR', () => {
@@ -91,19 +65,16 @@ describe('PipelineInfoHelper', () => {
       process.env.MY_CUSTOM_JOB_ID = 'custom-job-id';
       process.env.MY_CUSTOM_JOB_URL = 'https://custom.url/job/123';
       process.env.MY_CUSTOM_TRIGGERED_BY = 'custom-user';
-      process.env.MY_CUSTOM_WORKFLOW = 'Custom Workflow';
 
       const pipelineInfo = PipelineInfoHelper.fromEnvironment({
         jobId: 'MY_CUSTOM_JOB_ID',
         jobUrl: 'MY_CUSTOM_JOB_URL',
         triggeredBy: 'MY_CUSTOM_TRIGGERED_BY',
-        workflowName: 'MY_CUSTOM_WORKFLOW',
       });
 
       expect(pipelineInfo.jobId).toBe('custom-job-id');
       expect(pipelineInfo.jobUrl).toBe('https://custom.url/job/123');
       expect(pipelineInfo.triggeredBy).toBe('custom-user');
-      expect(pipelineInfo.workflowName).toBe('Custom Workflow');
     });
   });
 
@@ -118,13 +89,7 @@ describe('PipelineInfoHelper', () => {
       process.env.CI_JOB_URL = 'https://gitlab.com/group/project/-/jobs/67890';
       process.env.CI_PIPELINE_URL = 'https://gitlab.com/group/project/-/pipelines/12345';
       process.env.GITLAB_USER_LOGIN = 'john.doe';
-      process.env.CI_PROJECT_NAME = 'my-project';
       process.env.CI_PIPELINE_IID = '42';
-      process.env.CI_PIPELINE_SOURCE = 'push';
-      process.env.CI_JOB_NAME = 'build';
-      process.env.CI_JOB_STAGE = 'test';
-      process.env.CI_PROJECT_PATH = 'group/project';
-      process.env.CI_COMMIT_REF_NAME = 'main';
 
       const pipelineInfo = PipelineInfoHelper.fromEnvironment();
 
@@ -132,16 +97,7 @@ describe('PipelineInfoHelper', () => {
       expect(pipelineInfo.jobId).toBe('67890');
       expect(pipelineInfo.jobUrl).toBe('https://gitlab.com/group/project/-/jobs/67890');
       expect(pipelineInfo.triggeredBy).toBe('john.doe');
-      expect(pipelineInfo.workflowName).toBe('my-project');
       expect(pipelineInfo.runNumber).toBe('42');
-      expect(pipelineInfo.event).toBe('push');
-      expect(pipelineInfo.additionalInfo).toEqual({
-        jobName: 'build',
-        jobStage: 'test',
-        pipelineId: '12345',
-        projectPath: 'group/project',
-        commitRef: 'main',
-      });
     });
 
     it('should fallback to CI_COMMIT_AUTHOR and GITLAB_USER_NAME', () => {
@@ -167,19 +123,16 @@ describe('PipelineInfoHelper', () => {
       process.env.MY_CUSTOM_JOB_ID = 'custom-job-id';
       process.env.MY_CUSTOM_JOB_URL = 'https://custom.url/job/123';
       process.env.MY_CUSTOM_TRIGGERED_BY = 'custom-user';
-      process.env.MY_CUSTOM_WORKFLOW = 'Custom Workflow';
 
       const pipelineInfo = PipelineInfoHelper.fromEnvironment({
         jobId: 'MY_CUSTOM_JOB_ID',
         jobUrl: 'MY_CUSTOM_JOB_URL',
         triggeredBy: 'MY_CUSTOM_TRIGGERED_BY',
-        workflowName: 'MY_CUSTOM_WORKFLOW',
       });
 
       expect(pipelineInfo.jobId).toBe('custom-job-id');
       expect(pipelineInfo.jobUrl).toBe('https://custom.url/job/123');
       expect(pipelineInfo.triggeredBy).toBe('custom-user');
-      expect(pipelineInfo.workflowName).toBe('Custom Workflow');
     });
   });
 
@@ -193,26 +146,13 @@ describe('PipelineInfoHelper', () => {
         'arn:aws:codebuild:us-east-1:123456789012:build/my-project:abc-123';
       process.env.CODEBUILD_BUILD_NUMBER = '42';
       process.env.CODEBUILD_INITIATOR = 'john-doe';
-      process.env.CODEBUILD_SOURCE_VERSION = 'main';
-      process.env.CODEBUILD_WEBHOOK_EVENT = 'PULL_REQUEST_CREATED';
-      process.env.CODEBUILD_WEBHOOK_TRIGGER = 'pr/123';
-      process.env.CODEBUILD_PUBLIC_BUILD_URL = 'https://public.build.url';
 
       const pipelineInfo = PipelineInfoHelper.fromEnvironment();
 
       expect(pipelineInfo.provider).toBe(CiProvider.CODEBUILD);
       expect(pipelineInfo.jobId).toBe('my-project:abc-123');
       expect(pipelineInfo.triggeredBy).toBe('john-doe');
-      expect(pipelineInfo.workflowName).toBe('my-project');
       expect(pipelineInfo.runNumber).toBe('42');
-      expect(pipelineInfo.additionalInfo).toEqual({
-        buildArn: 'arn:aws:codebuild:us-east-1:123456789012:build/my-project:abc-123',
-        buildNumber: '42',
-        sourceVersion: 'main',
-        webhookEvent: 'PULL_REQUEST_CREATED',
-        webhookTrigger: 'pr/123',
-        publicBuildUrl: 'https://public.build.url',
-      });
     });
 
     it('should construct job URL from build ID and ARN', () => {
@@ -230,19 +170,16 @@ describe('PipelineInfoHelper', () => {
       process.env.MY_CUSTOM_JOB_ID = 'custom-job-id';
       process.env.MY_CUSTOM_JOB_URL = 'https://custom.url/job/123';
       process.env.MY_CUSTOM_TRIGGERED_BY = 'custom-user';
-      process.env.MY_CUSTOM_WORKFLOW = 'Custom Workflow';
 
       const pipelineInfo = PipelineInfoHelper.fromEnvironment({
         jobId: 'MY_CUSTOM_JOB_ID',
         jobUrl: 'MY_CUSTOM_JOB_URL',
         triggeredBy: 'MY_CUSTOM_TRIGGERED_BY',
-        workflowName: 'MY_CUSTOM_WORKFLOW',
       });
 
       expect(pipelineInfo.jobId).toBe('custom-job-id');
       expect(pipelineInfo.jobUrl).toBe('https://custom.url/job/123');
       expect(pipelineInfo.triggeredBy).toBe('custom-user');
-      expect(pipelineInfo.workflowName).toBe('Custom Workflow');
     });
   });
 
@@ -251,7 +188,6 @@ describe('PipelineInfoHelper', () => {
       process.env.BUILD_ID = '12345';
       process.env.BUILD_URL = 'https://ci.example.com/build/12345';
       process.env.BUILD_USER = 'john-doe';
-      process.env.WORKFLOW_NAME = 'CI Pipeline';
       process.env.BUILD_NUMBER = '42';
 
       const pipelineInfo = PipelineInfoHelper.fromEnvironment();
@@ -260,7 +196,6 @@ describe('PipelineInfoHelper', () => {
       expect(pipelineInfo.jobId).toBe('12345');
       expect(pipelineInfo.jobUrl).toBe('https://ci.example.com/build/12345');
       expect(pipelineInfo.triggeredBy).toBe('john-doe');
-      expect(pipelineInfo.workflowName).toBe('CI Pipeline');
       expect(pipelineInfo.runNumber).toBe('42');
     });
 
@@ -268,14 +203,12 @@ describe('PipelineInfoHelper', () => {
       process.env.JOB_ID = '67890';
       process.env.JOB_URL = 'https://jenkins.example.com/job/123';
       process.env.USER = 'jenkins-user';
-      process.env.PIPELINE_NAME = 'Build Pipeline';
 
       const pipelineInfo = PipelineInfoHelper.fromEnvironment();
 
       expect(pipelineInfo.jobId).toBe('67890');
       expect(pipelineInfo.jobUrl).toBe('https://jenkins.example.com/job/123');
       expect(pipelineInfo.triggeredBy).toBe('jenkins-user');
-      expect(pipelineInfo.workflowName).toBe('Build Pipeline');
     });
 
     it('should handle missing values gracefully', () => {

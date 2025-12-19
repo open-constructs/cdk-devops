@@ -82,11 +82,7 @@ export class StackMetadata extends Construct {
   /**
    * Create a new StackMetadata construct that extracts information from environment variables
    */
-  public static fromEnvironment(
-    scope: Construct,
-    id: string,
-    customEnvVars?: CustomEnvVarConfig,
-  ): StackMetadata {
+  public static fromEnvironment(scope: Construct, id: string, customEnvVars?: CustomEnvVarConfig): StackMetadata {
     return new StackMetadata(scope, id, {
       customEnvVars,
     });
@@ -135,47 +131,13 @@ export class StackMetadata extends Construct {
     // Add pipeline metadata
     const pipelineMetadata: Record<string, any> = {
       provider: this.pipelineInfo.provider,
+      jobId: this.pipelineInfo.jobId,
+      jobUrl: this.pipelineInfo.jobUrl,
+      triggeredBy: this.pipelineInfo.triggeredBy,
+      runNumber: this.pipelineInfo.runNumber,
     };
-
-    if (this.pipelineInfo.jobId) {
-      pipelineMetadata.jobId = this.pipelineInfo.jobId;
-    }
-    if (this.pipelineInfo.jobUrl) {
-      pipelineMetadata.jobUrl = this.pipelineInfo.jobUrl;
-    }
-    if (this.pipelineInfo.triggeredBy) {
-      pipelineMetadata.triggeredBy = this.pipelineInfo.triggeredBy;
-    }
-    if (this.pipelineInfo.workflowName) {
-      pipelineMetadata.workflowName = this.pipelineInfo.workflowName;
-    }
-    if (this.pipelineInfo.runNumber) {
-      pipelineMetadata.runNumber = this.pipelineInfo.runNumber;
-    }
-    if (this.pipelineInfo.runAttempt) {
-      pipelineMetadata.runAttempt = this.pipelineInfo.runAttempt;
-    }
-    if (this.pipelineInfo.event) {
-      pipelineMetadata.event = this.pipelineInfo.event;
-    }
-    if (this.pipelineInfo.additionalInfo && Object.keys(this.pipelineInfo.additionalInfo).length > 0) {
-      pipelineMetadata.additionalInfo = this.pipelineInfo.additionalInfo;
-    }
 
     stack.addMetadata(pipelineKey, pipelineMetadata);
   }
 
-  /**
-   * Get the repository information as a plain object
-   */
-  public repoMetadata(): RepoInfo {
-    return this.repoInfo;
-  }
-
-  /**
-   * Get the pipeline information as a plain object
-   */
-  public pipelineMetadata(): PipelineInfo {
-    return this.pipelineInfo;
-  }
 }

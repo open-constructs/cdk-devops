@@ -51,7 +51,6 @@ new StackMetadata(stack, 'Metadata', {
     jobId: 'MY_CUSTOM_JOB_ID',
     jobUrl: 'MY_CUSTOM_JOB_URL',
     triggeredBy: 'MY_CUSTOM_USER',
-    workflowName: 'MY_CUSTOM_WORKFLOW',
   },
 });
 ```
@@ -76,7 +75,6 @@ new StackMetadata(stack, 'Metadata', {
     jobId: '12345',
     jobUrl: 'https://github.com/my-org/my-repo/actions/runs/12345',
     triggeredBy: 'developer@example.com',
-    workflowName: 'Production Deployment',
     runNumber: '42',
   },
 });
@@ -109,10 +107,7 @@ Automatically detected when `GITHUB_ACTIONS=true`. Extracts:
 - Job ID from `GITHUB_RUN_ID`
 - Job URL (automatically constructed)
 - Triggered by from `GITHUB_ACTOR`
-- Workflow name from `GITHUB_WORKFLOW`
 - Run number from `GITHUB_RUN_NUMBER`
-- Run attempt from `GITHUB_RUN_ATTEMPT`
-- Event from `GITHUB_EVENT_NAME`
 
 ### GitLab CI
 
@@ -128,9 +123,7 @@ Automatically detected when `GITLAB_CI=true`. Extracts:
 - Job ID from `CI_JOB_ID` or `CI_PIPELINE_ID`
 - Job URL from `CI_JOB_URL` or `CI_PIPELINE_URL`
 - Triggered by from `GITLAB_USER_LOGIN` or `CI_COMMIT_AUTHOR`
-- Workflow name from `CI_PROJECT_NAME`
 - Run number from `CI_PIPELINE_IID`
-- Event from `CI_PIPELINE_SOURCE`
 
 ### AWS CodeBuild
 
@@ -145,7 +138,6 @@ Automatically detected when `CODEBUILD_BUILD_ID` is present. Extracts:
 - Job ID from `CODEBUILD_BUILD_ID`
 - Job URL (automatically constructed from ARN)
 - Triggered by from `CODEBUILD_INITIATOR`
-- Workflow name parsed from `CODEBUILD_BUILD_ARN`
 - Build number from `CODEBUILD_BUILD_NUMBER`
 
 ### Generic CI/CD
@@ -158,7 +150,6 @@ Fallback support for any CI/CD system using standard environment variables:
 - `BUILD_ID`, `JOB_ID`
 - `BUILD_URL`, `JOB_URL`
 - `BUILD_USER`, `USER`
-- `WORKFLOW_NAME`, `PIPELINE_NAME`
 
 ## Output
 
@@ -179,16 +170,7 @@ The construct adds metadata to your CloudFormation template:
       "jobId": "12345",
       "jobUrl": "https://github.com/open-constructs/cdk-devops/actions/runs/12345",
       "triggeredBy": "developer@example.com",
-      "workflowName": "CI Pipeline",
-      "runNumber": "42",
-      "runAttempt": "1",
-      "event": "push",
-      "additionalInfo": {
-        "job": "build",
-        "action": "build-action",
-        "ref": "refs/heads/main",
-        "sha": "abc123def456789"
-      }
+      "runNumber": "42"
     }
   }
 }
@@ -201,10 +183,10 @@ You can access the extracted metadata programmatically:
 ```typescript
 const metadata = new StackMetadata(stack, 'Metadata');
 
-const repoInfo = metadata.repoMetadata();
+const repoInfo = metadata.repoInfo;
 console.log(`Deployed from ${repoInfo.owner}/${repoInfo.repository}@${repoInfo.commitHash}`);
 
-const pipelineInfo = metadata.pipelineMetadata();
+const pipelineInfo = metadata.pipelineInfo;
 console.log(`Build triggered by ${pipelineInfo.triggeredBy}`);
 ```
 

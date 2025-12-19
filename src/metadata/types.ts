@@ -63,29 +63,10 @@ export interface PipelineInfo {
   readonly triggeredBy?: string;
 
   /**
-   * Workflow/pipeline name
-   */
-  readonly workflowName?: string;
-
-  /**
    * Run number
    */
   readonly runNumber?: string;
 
-  /**
-   * Run attempt (for retries)
-   */
-  readonly runAttempt?: string;
-
-  /**
-   * Event that triggered the workflow
-   */
-  readonly event?: string;
-
-  /**
-   * Additional provider-specific information
-   */
-  readonly additionalInfo?: Record<string, string>;
 }
 
 /**
@@ -127,8 +108,4 @@ export interface CustomEnvVarConfig {
    */
   readonly triggeredBy?: string;
 
-  /**
-   * Custom environment variable for workflow name
-   */
-  readonly workflowName?: string;
 }
