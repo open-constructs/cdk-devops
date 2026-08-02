@@ -40,6 +40,10 @@ const project = new awscdk.AwsCdkConstructLibrary({
   // packageName: undefined,  /* The "name" in package.json. */
 });
 
+// Ignore the .tmp/ directory used by compute-version for version artifacts
+project.gitignore.exclude('.tmp/');
+project.npmignore?.exclude('.tmp/');
+
 project.jest?.addSetupFileAfterEnv('<rootDir>/test/jest.setup.ts');
 
 // Add CLI bin entry for compute-version

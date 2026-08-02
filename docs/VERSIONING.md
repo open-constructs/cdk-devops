@@ -256,18 +256,58 @@ const config = VersioningOutputsFactory.minimal();
 
 ## CLI Usage
 
-The `compute-version` CLI computes version information from git:
+The `compute-version` CLI computes version information from git and writes it to
+a JSON artifact file.
 
 ```bash
-# Basic usage
-npx compute-version --environment production
+# Basic usage — writes to .tmp/version.json (default)
+npx compute-version '{"format":"{commit-count}","components":{}}'
 
-# With strategy
-npx compute-version --strategy git-tag --environment staging
+# Custom strategy
+npx compute-version '{"format":"{git-tag}","components":{"commitCount":{"mode":"all"}}}'
 
-# Output as JSON
-npx compute-version --format json
+# Override output path
+npx compute-version --output build/version.json '{"format":"{commit-count}","components":{}}'
+
+# Or via environment variable
+VERSION_OUTPUT_PATH=build/version.json npx compute-version '{"format":"{commit-count}","components":{}}'
 ```
+
+### Version Artifact
+
+| Setting | Value |
+|---------|-------|
+| Default path | `.tmp/version.json` |
+| Override flag | `--output <path>` / `-o <path>` |
+| Environment variable | `VERSION_OUTPUT_PATH` |
+| Gitignored | Yes (`.tmp/` is excluded) |
+
+The artifact is a JSON file containing all computed version fields (version,
+commitHash, shortCommitHash, branch, tag, commitCount, environment, etc.).
+
+**Path validation:** The CLI rejects output paths whose filename starts with
+`~`, `-`, or `#` — characters that cause shell-parsing hazards (tilde expansion,
+option-flag interpretation, comment stripping).
+
+### Reading the Version File (Programmatic)
+
+```typescript
+import { readVersionFile } from 'cdk-devops';
+
+// Reads from .tmp/version.json, falls back to ~version.json (deprecated)
+const json = readVersionFile();
+```
+
+### Migration from `~version.json`
+
+Previous versions wrote the artifact to `~version.json`. A leading `~` in a
+filename triggers tilde expansion in shell emulators used by Yarn Berry, pnpm,
+and Bun, causing the build step to abort with "Unsupported tilde expansion".
+
+The new default is `.tmp/version.json`. The `readVersionFile()` helper still
+reads `~version.json` as a fallback and emits a deprecation warning. This
+fallback will be removed in the next minor release. Update any CI scripts or
+projen tasks that reference `~version.json` to use `.tmp/version.json`.
 
 ## Environment Variables
 
