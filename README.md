@@ -55,8 +55,24 @@ For detailed documentation, see [Metadata Guide](docs/METADATA.md).
 A CLI utility for computing versions based on git information:
 
 ```bash
-npx compute-version --strategy git-tag --environment production
+# Basic usage (writes to .tmp/version.json)
+npx compute-version '{"format":"{commit-count}","components":{}}'
+
+# Custom output path
+npx compute-version --output build/version.json '{"format":"{git-tag}","components":{}}'
 ```
+
+The version artifact is written to `.tmp/version.json` by default. This path is
+gitignored and safe for all shell emulators (Yarn Berry, pnpm, Bun).
+
+You can override the output path with the `--output` (or `-o`) flag, or via the
+`VERSION_OUTPUT_PATH` environment variable.
+
+> **Migration note:** Previous versions wrote to `~version.json`. That path
+> caused tilde-expansion failures in non-bash shell emulators. The CLI still
+> reads `~version.json` as a fallback (with a deprecation warning), but no
+> longer writes to it. Update any scripts that reference `~version.json` to
+> use `.tmp/version.json` instead.
 
 ## API Reference
 
